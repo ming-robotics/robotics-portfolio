@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="丁彬的机器人软件开发简历，涵盖排水管检设备联调、海钓船推进与转向控制和 ROS1 无人机自主导航。">
+  <meta name="theme-color" content="#f7f6f0">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="丁彬｜机器人软件开发简历">
+  <meta property="og:description" content="丁彬的工作经历、实机项目和技术栈。">
+  <meta property="og:url" content="https://ming-robotics.github.io/robotics-portfolio/resume.html">
+  <meta property="og:image" content="https://ming-robotics.github.io/robotics-portfolio/art/portfolio-social.png">
+  <meta property="og:image:alt" content="丁彬机器人软件开发作品集">
+  <title>丁彬｜机器人软件开发简历</title>
+  <link rel="icon" type="image/svg+xml" href="art/mark.svg">
+  <link rel="canonical" href="https://ming-robotics.github.io/robotics-portfolio/resume.html">
+  <link rel="stylesheet" href="assets/css/styles.css?v=portfolio-5">
+  <link rel="stylesheet" href="assets/css/resume.css">
+  <script src="assets/js/resume.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <div class="resume-wrap resume-toolbar">
+      <a class="resume-home" href="index.html"><span aria-hidden="true">←</span> 返回作品集</a>
+      <button class="button primary resume-print" type="button" hidden>打印 / 保存为 PDF</button>
+    </div>
+  </header>
+  <main class="resume-wrap resume-sheet" id="main" tabindex="-1" aria-labelledby="resume-title">
+    <header class="resume-header">
+      <h1 id="resume-title">丁彬</h1>
+      <p class="resume-role">ROS1 / ROS2 机器人软件开发工程师</p>
+      <p class="resume-summary">参与船舶推进、转向及管道巡检设备的本体控制和实机联调。独立完成 ROS1 无人机自主导航和 ROS2 AGV 多传感器融合导航。</p>
+      <div class="resume-links">
+        <a href="https://ming-robotics.github.io/robotics-portfolio/"><span class="resume-screen-url">在线作品集</span><span class="resume-print-url">ming-robotics.github.io/robotics-portfolio</span></a>
+        <a href="https://github.com/ming-robotics"><span class="resume-screen-url">GitHub · ming-robotics</span><span class="resume-print-url">github.com/ming-robotics</span></a>
+      </div>
+    </header>
+    <section class="resume-section" aria-labelledby="work-title">
+      <h2 id="work-title">工作经历</h2>
+      <div class="resume-heading">
+        <h3>广州市逐电科技有限公司 · 机器人软件开发工程师</h3>
+        <p class="resume-date"><time datetime="2025-08">2025.08</time> — <time datetime="2026-11">2026.11</time></p>
+      </div>
+      <ul>
+        <li>负责机器人本体侧的指令执行与设备联调，涉及船舶推进、转向及管检机器人的行走、升降和拍摄动作。</li>
+        <li>参与拉网捕鱼无人船的差速推进与作业联调，系统已用于实际捕鱼作业。</li>
+      </ul>
+    </section>
+    <section class="resume-section resume-projects" aria-labelledby="projects-title">
+      <h2 id="projects-title">代表项目</h2>
+      <article>
+        <h3><a href="cases/drain-inspection.html">排水管道检测机器人</a></h3>
+        <p>负责本体侧的指令执行与设备联调，通过系缆配合上位机执行底盘行走、升降和拍摄。系统已用于正式排水管道检测。</p>
+      </article>
+      <article>
+        <h3><a href="cases/fishing-boat-control.html">海钓船用顶流机</a></h3>
+        <p>负责船体侧的推进与转向指令执行，联调 CAN 推进驱动器和 RS-485 转向伺服。系统在有风浪的近海完成 3 小时实船稳船测试。</p>
+      </article>
+      <article>
+        <h3><a href="cases/ros1-uav.html">ROS1 自主导航无人机</a></h3>
+        <p>独立使用 C++ 开发任务控制和传感器处理节点，通过 MAVROS 联通 ROS1 与飞控。在 Gazebo 联调后，实飞验证自主巡航、避障和定点起降。</p>
+      </article>
+    </section>
+    <section class="resume-section" aria-labelledby="skills-title">
+      <h2 id="skills-title">技术栈</h2>
+      <p>ROS1 / ROS2 Humble、C++ / Python、Linux、Gazebo、MAVROS、robot_localization、CAN、RS-485、Modbus RTU</p>
+    </section>
+    <section class="resume-section" aria-labelledby="education-title">
+      <h2 id="education-title">教育与竞赛</h2>
+      <div class="resume-heading">
+        <h3>江西师范大学科学技术学院 · 电子信息工程本科</h3>
+        <p class="resume-date"><time datetime="2022">2022</time> — <time datetime="2026">2026</time></p>
+      </div>
+      <ul>
+        <li>全国大学生电子设计竞赛全国二等奖（2025）</li>
+        <li>蓝桥杯全国大学生软件和信息技术大赛嵌入式赛项全国二等奖（2025）</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

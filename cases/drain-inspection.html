@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="丁彬的排水管道检测机器人案例，介绍系缆本体的指令执行、巡检动作联调与正式作业验证。">
+  <meta name="theme-color" content="#f7f6f0">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="排水管道检测机器人｜丁彬">
+  <meta property="og:description" content="在职开发案例。负责排水管检机器人的本体指令执行和实机联调，系统已用于正式管检作业。">
+  <meta property="og:url" content="https://ming-robotics.github.io/robotics-portfolio/cases/drain-inspection.html">
+  <meta property="og:image" content="https://ming-robotics.github.io/robotics-portfolio/art/portfolio-social.png">
+  <meta property="og:image:alt" content="丁彬的机器人软件开发作品集">
+  <title>排水管道检测机器人｜丁彬</title>
+  <link rel="canonical" href="https://ming-robotics.github.io/robotics-portfolio/cases/drain-inspection.html">
+  <link rel="icon" type="image/svg+xml" href="../art/mark.svg">
+  <link rel="stylesheet" href="../assets/css/styles.css?v=portfolio-7">
+  <link rel="stylesheet" href="../assets/css/case.css?v=portfolio-7">
+</head>
+<body>
+  <a class="skip" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <div class="shell nav-wrap case-nav">
+      <a class="brand" href="../index.html" aria-label="丁彬，返回作品集首页">
+        <img src="../art/mark.svg" width="36" height="36" alt="">
+        <span>丁彬<small>DING BIN</small></span>
+      </a>
+      <a class="back-to-projects" href="../index.html#projects"><span aria-hidden="true">←</span> 项目案例</a>
+    </div>
+  </header>
+  <main class="shell case-page" id="main" tabindex="-1">
+    <article aria-labelledby="case-name">
+      <header class="case-intro">
+        <h1 id="case-name">排水管道检测机器人</h1>
+        <p>在相邻检查井之间远程巡检。操作员通过系缆控制机器人在管内行走和拍摄，并按井段与里程查阅视频。</p>
+        <ul class="tags" aria-label="项目技术栈">
+          <li class="tag">系缆控制</li><li class="tag">Modbus RTU</li><li class="tag">工业相机</li>
+        </ul>
+        <dl class="case-facts">
+          <div><dt>个人职责</dt><dd>联调本体侧行走、升降、云台拍摄与补光</dd></div>
+          <div><dt>系统验证</dt><dd>已用于正式排水管道检测</dd></div>
+        </dl>
+      </header>
+      <!-- case-engineering:start -->
+      <div class="case-engineering">
+        <section class="engineering-section" aria-labelledby="engineering-w03-architecture">
+          <h2 id="engineering-w03-architecture">项目整体架构图</h2>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">井下巡检</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>地面操作端</strong><span>控制井段巡检和停驻拍摄</span></div>
+                <div class="engineering-connector"><span>巡检指令</span></div>
+                <div class="engineering-node"><strong>地面工控机</strong><span>编排行走、升降、视角与补光动作</span></div>
+                <div class="engineering-connector"><span>系缆控制</span></div>
+                <div class="engineering-node"><strong>系缆巡检机器人</strong><span>执行底盘、升降与云台动作并采集影像</span></div>
+              </div>
+            </div>
+            <div class="engineering-path">
+              <p class="engineering-path-label">影像回查</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>现场采集</strong><span>工业相机、IMU、轮编码器及放缆计米</span></div>
+                <div class="engineering-connector"><span>视频与状态数据</span></div>
+                <div class="engineering-node"><strong>工控机索引及缺陷筛查</strong><span>按时间戳关联记录，运行视觉模型</span></div>
+                <div class="engineering-connector"><span>井段索引、候选结果</span></div>
+                <div class="engineering-node"><strong>操作端复核</strong><span>按井段和估计里程回看影像及关键帧</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-w03-communication">
+          <h2 id="engineering-w03-communication">ROS2 节点通信关系图</h2>
+          <p class="engineering-note">节点按职责命名。指令下发和采集归档分别对应控制链路与数据链路。</p>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">动作调度</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>巡检任务节点</strong><span>组织沿程录像和停驻拍摄</span></div>
+                <div class="engineering-connector"><span>巡检动作指令</span></div>
+                <div class="engineering-node"><strong>设备接口模块</strong><span>将任务指令转为本体与绕线器控制量</span></div>
+                <div class="engineering-connector"><span>系缆控制信号</span></div>
+                <div class="engineering-node"><strong>现场设备</strong><span>执行底盘、升降、云台及补光动作</span></div>
+              </div>
+            </div>
+            <div class="engineering-path">
+              <p class="engineering-path-label">采集对齐</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>影像与状态采集模块</strong><span>收集视频帧、IMU、轮编码器及计米数据</span></div>
+                <div class="engineering-connector"><span>时间戳与观测</span></div>
+                <div class="engineering-node"><strong>时间戳关联与索引</strong><span>按井段和估计里程定位原始记录</span></div>
+                <div class="engineering-connector"><span>影像索引</span></div>
+                <div class="engineering-node"><strong>缺陷筛查与回看</strong><span>关联候选缺陷和对应视频位置</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-w03-modules">
+          <h2 id="engineering-w03-modules">软件模块设计</h2>
+          <dl class="engineering-modules">
+            <div><dt>巡检任务编排</dt><dd>按相邻检查井之间的管段组织行走、沿程录像与停驻拍摄。</dd></div>
+            <div><dt>机器人本体控制</dt><dd>接收系缆指令，联调底盘、升降与云台，并配合补光。</dd></div>
+            <div><dt>进尺与影像索引</dt><dd>关联视频、惯性、轮编码器和计米数据，支持按井段与估计里程检索。</dd></div>
+            <div><dt>视觉缺陷筛查</dt><dd>通过 ONNX Runtime 提取候选缺陷，生成包含里程区间和关键帧的复核条目。</dd></div>
+          </dl>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-w03-interfaces">
+          <h2 id="engineering-w03-interfaces">硬件通信接口设计</h2>
+          <table class="engineering-interfaces">
+            <thead><tr><th scope="col">设备或端点</th><th scope="col">通信接口</th><th scope="col">信号或数据</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">底盘、升降、云台与绕线器</th><td>系缆 / RS-485、Modbus RTU</td><td>设备动作指令、收放线控制和计米数据</td></tr>
+              <tr><th scope="row">工业相机与工控机</th><td>视频采集链路</td><td>巡检视频帧</td></tr>
+              <tr><th scope="row">补光设备</th><td>远程 I/O</td><td>补光控制</td></tr>
+              <tr><th scope="row">升降限位与驱动器</th><td>驱动器本地输入</td><td>升降限位信号</td></tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-w03-key">
+          <h2 id="engineering-w03-key">关键功能与技术说明</h2>
+          <dl class="engineering-key">
+            <div><dt>里程与影像关联</dt><dd>用时间戳对齐视频帧、轮编码器和放缆计米记录，在可识别的检查井或接缝处校正里程，便于回查具体位置。</dd></div>
+            <div><dt>筛查结果去重与复核</dt><dd>对相邻帧中落在同一估计里程区间的重复发现进行合并。每条记录保留关键帧和置信度，供操作员复核。</dd></div>
+          </dl>
+        </section>
+      </div>
+      <!-- case-engineering:end -->
+      <section class="case-section" aria-labelledby="validation">
+        <h2 id="validation">现场数据与缺陷复核</h2>
+        <p>系统的缺陷筛查功能通过 ONNX Runtime 运行模型，标出裂缝、沉积物和接缝错口等候选项。该功能曾使用现场采集的数据运行，结果供操作员复核。</p>
+      </section>
+    </article>
+    <nav class="case-section related-cases" aria-labelledby="related-title">
+      <h2 id="related-title">其他代表案例</h2>
+      <ul>
+        <li><a href="fishing-boat-control.html">海钓船用顶流机</a></li>
+        <li><a href="ros1-uav.html">ROS1 自主导航无人机</a></li>
+      </ul>
+    </nav>
+  </main>
+</body>
+</html>

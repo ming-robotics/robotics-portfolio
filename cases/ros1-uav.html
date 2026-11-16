@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="丁彬独立完成的 ROS1 无人机毕业设计，联调 MAVROS、Pixhawk 与 ArduPilot，在实飞中验证巡航、避障和定点起降。">
+  <meta name="theme-color" content="#f7f6f0">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="ROS1 自主导航无人机｜丁彬">
+  <meta property="og:description" content="独立完成的本科毕业设计，从 Gazebo 仿真联调推进到无人机自主巡航、避障和定点起降实飞验证。">
+  <meta property="og:url" content="https://ming-robotics.github.io/robotics-portfolio/cases/ros1-uav.html">
+  <meta property="og:image" content="https://ming-robotics.github.io/robotics-portfolio/art/portfolio-social.png">
+  <meta property="og:image:alt" content="丁彬的机器人软件开发作品集">
+  <title>ROS1 自主导航无人机｜丁彬</title>
+  <link rel="canonical" href="https://ming-robotics.github.io/robotics-portfolio/cases/ros1-uav.html">
+  <link rel="icon" type="image/svg+xml" href="../art/mark.svg">
+  <link rel="stylesheet" href="../assets/css/styles.css?v=portfolio-7">
+  <link rel="stylesheet" href="../assets/css/case.css?v=portfolio-7">
+</head>
+<body>
+  <a class="skip" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <div class="shell nav-wrap case-nav">
+      <a class="brand" href="../index.html" aria-label="丁彬，返回作品集首页">
+        <img src="../art/mark.svg" width="36" height="36" alt="">
+        <span>丁彬<small>DING BIN</small></span>
+      </a>
+      <a class="back-to-projects" href="../index.html#projects"><span aria-hidden="true">←</span> 项目案例</a>
+    </div>
+  </header>
+  <main class="shell case-page" id="main" tabindex="-1">
+    <article aria-labelledby="case-name">
+      <header class="case-intro">
+        <h1 id="case-name">ROS1 自主导航无人机</h1>
+        <p>将 ROS1 的任务控制和导航接入多旋翼飞控，在 Gazebo 中联调飞行与导航流程，再迁移到实机。</p>
+        <ul class="tags" aria-label="项目技术栈">
+          <li class="tag">ROS1</li><li class="tag">C++</li><li class="tag">MAVROS</li><li class="tag">Gazebo</li>
+        </ul>
+        <dl class="case-facts">
+          <div><dt>个人职责</dt><dd>独立完成本科毕设 · 开发 C++ 任务控制和传感器处理节点</dd></div>
+          <div><dt>实飞验证</dt><dd>自主巡航、避障和定点起降</dd></div>
+        </dl>
+      </header>
+      <!-- case-engineering:start -->
+      <div class="case-engineering">
+        <section class="engineering-section" aria-labelledby="engineering-s01-architecture">
+          <h2 id="engineering-s01-architecture">项目整体架构图</h2>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">任务与飞行控制</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>ROS1 任务与导航</strong><span>处理任务目标、定位和路径规划</span></div>
+                <div class="engineering-connector"><span>飞行指令</span></div>
+                <div class="engineering-node"><strong>MAVROS</strong><span>桥接 ROS1 软件与飞控</span></div>
+                <div class="engineering-connector"><span>指令下发</span></div>
+                <div class="engineering-node"><strong>Pixhawk 4 / ArduPilot</strong><span>执行飞行控制</span></div>
+              </div>
+            </div>
+            <div class="engineering-path">
+              <p class="engineering-path-label">飞行状态回传</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>GNSS / IMU</strong><span>提供定位及惯性测量</span></div>
+                <div class="engineering-connector"><span>传感器观测</span></div>
+                <div class="engineering-node"><strong>Pixhawk 4 / ArduPilot</strong><span>处理传感器观测并提供飞行状态</span></div>
+                <div class="engineering-connector"><span>飞行状态</span></div>
+                <div class="engineering-node"><strong>ROS1 任务与导航</strong><span>通过 MAVROS 获取飞控反馈</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s01-communication">
+          <h2 id="engineering-s01-communication">ROS1 节点通信关系图</h2>
+          <p class="engineering-note">图中按软件职责标记节点，连线文字表示交换的信息。飞控是 MAVROS 连接的外部设备。</p>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">定位到规划</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>地图与里程计输入</strong><span>提供定位参考</span></div>
+                <div class="engineering-connector"><span>地图与运动估计</span></div>
+                <div class="engineering-node"><strong>AMCL</strong><span>估计地图中的位置</span></div>
+                <div class="engineering-connector"><span>定位与坐标关系</span></div>
+                <div class="engineering-node"><strong>move_base</strong><span>结合定位与任务目标进行规划</span></div>
+              </div>
+            </div>
+            <div class="engineering-path">
+              <p class="engineering-path-label">飞行控制</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>C++ 任务控制节点</strong><span>组织巡航、避障和起降任务</span></div>
+                <div class="engineering-connector"><span>飞行指令</span></div>
+                <div class="engineering-node"><strong>MAVROS</strong><span>桥接指令与状态消息</span></div>
+                <div class="engineering-connector"><span>飞控指令</span></div>
+                <div class="engineering-node"><strong>ArduPilot 飞控</strong><span>执行动作并返回飞行状态</span></div>
+              </div>
+            </div>
+            <div class="engineering-path">
+              <p class="engineering-path-label">状态反馈</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>ArduPilot 飞控</strong><span>生成飞行状态反馈</span></div>
+                <div class="engineering-connector"><span>飞控状态</span></div>
+                <div class="engineering-node"><strong>MAVROS</strong><span>将反馈传回 ROS1</span></div>
+                <div class="engineering-connector"><span>ROS1 状态消息</span></div>
+                <div class="engineering-node"><strong>任务控制节点</strong><span>接收飞控状态</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s01-modules">
+          <h2 id="engineering-s01-modules">软件模块设计</h2>
+          <dl class="engineering-modules">
+            <div><dt>任务控制</dt><dd>以 C++ 节点承接飞行目标，组织自主巡航、避障和定点起降。</dd></div>
+            <div><dt>传感器处理</dt><dd>以 C++ 节点处理传感器数据，编写姿态解算相关代码。</dd></div>
+            <div><dt>定位与规划</dt><dd>联调 TF、AMCL 和 move_base，编写 A* 路径搜索相关代码。</dd></div>
+            <div><dt>飞控接入</dt><dd>通过 MAVROS 下发飞行指令并读取状态，完成 Pixhawk 4 的实机校准。</dd></div>
+            <div><dt>仿真联调</dt><dd>在 Gazebo 中联调导航和飞行控制流程，再迁移至实机验证。</dd></div>
+          </dl>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s01-interfaces">
+          <h2 id="engineering-s01-interfaces">硬件通信接口设计</h2>
+          <table class="engineering-interfaces">
+            <thead><tr><th scope="col">设备或端点</th><th scope="col">通信接口</th><th scope="col">信号或数据</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">GNSS → Pixhawk 4</th><td>定位数据接入</td><td>GNSS 定位观测</td></tr>
+              <tr><th scope="row">IMU → Pixhawk 4</th><td>惯性传感器接入</td><td>惯性测量信息</td></tr>
+              <tr><th scope="row">ROS1 ↔ Pixhawk 4 / ArduPilot</th><td>MAVROS 飞控桥接</td><td>下发飞行指令，读取飞控状态</td></tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s01-key">
+          <h2 id="engineering-s01-key">关键功能与技术说明</h2>
+          <dl class="engineering-key">
+            <div><dt>定位与规划如何衔接</dt><dd>AMCL 结合预建地图、里程计等观测，以粒子滤波估计地图中的位置。TF 提供各模块需要的坐标关系，move_base 根据定位结果和任务目标组织导航。</dd></div>
+            <div><dt>A* 路径搜索</dt><dd>按起点到候选节点的累计代价和候选节点到目标的启发式代价选择扩展顺序，用于搜索到达目标的路径。</dd></div>
+          </dl>
+        </section>
+      </div>
+      <!-- case-engineering:end -->
+    </article>
+    <nav class="case-section related-cases" aria-labelledby="related-title">
+      <h2 id="related-title">其他代表案例</h2>
+      <ul>
+        <li><a href="drain-inspection.html">排水管道检测机器人</a></li>
+        <li><a href="fishing-boat-control.html">海钓船用顶流机</a></li>
+      </ul>
+    </nav>
+  </main>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="丁彬的海钓船用顶流机案例，介绍船体侧推进与转向指令联调，以及近海 3 小时实船稳船测试。">
+  <meta name="theme-color" content="#f7f6f0">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="海钓船用顶流机｜丁彬">
+  <meta property="og:description" content="在职开发案例。联调 CAN 推进驱动器与 RS-485 转向伺服，系统完成近海 3 小时实船稳船测试。">
+  <meta property="og:url" content="https://ming-robotics.github.io/robotics-portfolio/cases/fishing-boat-control.html">
+  <meta property="og:image" content="https://ming-robotics.github.io/robotics-portfolio/art/portfolio-social.png">
+  <meta property="og:image:alt" content="丁彬的机器人软件开发作品集">
+  <title>海钓船用顶流机｜丁彬</title>
+  <link rel="canonical" href="https://ming-robotics.github.io/robotics-portfolio/cases/fishing-boat-control.html">
+  <link rel="icon" type="image/svg+xml" href="../art/mark.svg">
+  <link rel="stylesheet" href="../assets/css/styles.css?v=portfolio-7">
+  <link rel="stylesheet" href="../assets/css/case.css?v=portfolio-7">
+</head>
+<body>
+  <a class="skip" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <div class="shell nav-wrap case-nav">
+      <a class="brand" href="../index.html" aria-label="丁彬，返回作品集首页">
+        <img src="../art/mark.svg" width="36" height="36" alt="">
+        <span>丁彬<small>DING BIN</small></span>
+      </a>
+      <a class="back-to-projects" href="../index.html#projects"><span aria-hidden="true">←</span> 项目案例</a>
+    </div>
+  </header>
+  <main class="shell case-page" id="main" tabindex="-1">
+    <article aria-labelledby="case-name">
+      <header class="case-intro">
+        <h1 id="case-name">海钓船用顶流机</h1>
+        <p>控制船体推进与转向，让海钓船在风浪中维持钓点驻留，并支持短距移钓和船员手动接管。</p>
+        <ul class="tags" aria-label="项目技术栈">
+          <li class="tag">ROS2</li><li class="tag">ros2_control</li><li class="tag">CAN</li><li class="tag">RS-485</li>
+        </ul>
+        <dl class="case-facts">
+          <div><dt>个人职责</dt><dd>联调船体侧 CAN 推进驱动器与 RS-485 转向伺服</dd></div>
+          <div><dt>实船验证</dt><dd>近海 3 小时稳船驻留测试</dd></div>
+        </dl>
+      </header>
+      <!-- case-engineering:start -->
+      <div class="case-engineering">
+        <section class="engineering-section" aria-labelledby="engineering-w01-architecture">
+          <h2 id="engineering-w01-architecture">项目整体架构图</h2>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">稳船控制</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>船员操作端</strong><span>锁定钓点、短距移钓或手动接管</span></div>
+                <div class="engineering-connector"><span>任务请求</span></div>
+                <div class="engineering-node"><strong>船载工控机</strong><span>根据位置偏差和船体航向计算目标转速与舵角</span></div>
+                <div class="engineering-connector"><span>转速和舵角</span></div>
+                <div class="engineering-node"><strong>船体推进与转向</strong><span>驱动器闭环控制转速，伺服闭环控制舵角</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-w01-communication">
+          <h2 id="engineering-w01-communication">ROS2 节点通信关系图</h2>
+          <p class="engineering-note">任务节点按职责命名。ros2_control 的 SystemInterface 是控制栈接入设备的硬件接口。</p>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">任务下发</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>操作端任务客户端</strong><span>提交稳船目标或取消任务</span></div>
+                <div class="engineering-connector"><span>Action 目标、取消</span></div>
+                <div class="engineering-node"><strong>稳船任务节点</strong><span>处理目标，计算推进和转向指令</span></div>
+                <div class="engineering-connector"><span>参考指令</span></div>
+                <div class="engineering-node"><strong>ros2_control 控制栈</strong><span>通过 SystemInterface 下发目标量</span></div>
+              </div>
+            </div>
+            <div class="engineering-path">
+              <p class="engineering-path-label">状态反馈</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>ros2_control 控制栈</strong><span>从硬件接口读回设备状态</span></div>
+                <div class="engineering-connector"><span>设备反馈</span></div>
+                <div class="engineering-node"><strong>稳船任务节点</strong><span>结合定位状态形成任务反馈</span></div>
+                <div class="engineering-connector"><span>Action 反馈</span></div>
+                <div class="engineering-node"><strong>操作端任务客户端</strong><span>显示钓点偏差、漂移方向与推进负载</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-w01-modules">
+          <h2 id="engineering-w01-modules">软件模块设计</h2>
+          <dl class="engineering-modules">
+            <div><dt>稳船任务管理</dt><dd>负责驻留、移钓和手动接管时的模式切换，管理任务目标、反馈和取消。</dd></div>
+            <div><dt>控制量计算</dt><dd>根据钓点位置偏差与船体航向计算推进转速和目标舵角。</dd></div>
+            <div><dt>船体执行接口</dt><dd>对接 CAN 推进驱动器和 RS-485 转向伺服，联调转速及舵角反馈。</dd></div>
+            <div><dt>水测数据记录</dt><dd>在 rosbag2 中关联漂移轨迹、电机电流和舵角跟随误差。</dd></div>
+          </dl>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-w01-interfaces">
+          <h2 id="engineering-w01-interfaces">硬件通信接口设计</h2>
+          <table class="engineering-interfaces">
+            <thead><tr><th scope="col">设备或端点</th><th scope="col">通信接口</th><th scope="col">信号或数据</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">推进驱动器</th><td>CAN</td><td>目标转速与推进运行反馈</td></tr>
+              <tr><th scope="row">转向伺服</th><td>RS-485</td><td>目标舵角与转向位置反馈</td></tr>
+              <tr><th scope="row">转向限位与停推回路</th><td>本地硬件联锁</td><td>转向限位状态与回程停推条件</td></tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-w01-key">
+          <h2 id="engineering-w01-key">关键功能与技术说明</h2>
+          <dl class="engineering-key">
+            <div><dt>上层目标与本地闭环</dt><dd>工控机计算目标转速和舵角，推进驱动器和转向伺服分别在本地执行转速闭环与位置闭环。</dd></div>
+            <div><dt>定位失效处理</dt><dd>定位失效时，上位任务下发停推指令并退出稳船模式。转向限位和回程停推由本地硬件联锁处理。</dd></div>
+          </dl>
+        </section>
+      </div>
+      <!-- case-engineering:end -->
+      <section class="case-section" aria-labelledby="validation">
+        <h2 id="validation">实船测试与记录</h2>
+        <p>系统在有风浪的近海完成 3 小时实船稳船驻留测试。测试记录通过 rosbag2 关联漂移轨迹、电机电流和舵角跟随误差，供试后回看。</p>
+      </section>
+    </article>
+    <nav class="case-section related-cases" aria-labelledby="related-title">
+      <h2 id="related-title">其他代表案例</h2>
+      <ul>
+        <li><a href="drain-inspection.html">排水管道检测机器人</a></li>
+        <li><a href="ros1-uav.html">ROS1 自主导航无人机</a></li>
+      </ul>
+    </nav>
+  </main>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="丁彬独立完成的 ROS2 AGV，多传感器接入、EKF 融合与导航联调，实车完成 200 米连续运输。">
+  <meta name="theme-color" content="#f7f6f0">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="ROS2 AGV 多传感器融合导航｜丁彬">
+  <meta property="og:description" content="校园独立开发案例。基于 STM32 底盘联调 ROS2 感知、融合定位及路径规划，实车完成 200 米连续运输。">
+  <meta property="og:url" content="https://ming-robotics.github.io/robotics-portfolio/cases/agv-navigation.html">
+  <meta property="og:image" content="https://ming-robotics.github.io/robotics-portfolio/art/portfolio-social.png">
+  <meta property="og:image:alt" content="丁彬的机器人软件开发作品集">
+  <title>ROS2 AGV 多传感器融合导航｜丁彬</title>
+  <link rel="canonical" href="https://ming-robotics.github.io/robotics-portfolio/cases/agv-navigation.html">
+  <link rel="icon" type="image/svg+xml" href="../art/mark.svg">
+  <link rel="stylesheet" href="../assets/css/styles.css?v=portfolio-7">
+  <link rel="stylesheet" href="../assets/css/case.css?v=portfolio-7">
+</head>
+<body>
+  <a class="skip" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <div class="shell nav-wrap case-nav">
+      <a class="brand" href="../index.html" aria-label="丁彬，返回作品集首页">
+        <img src="../art/mark.svg" width="36" height="36" alt="">
+        <span>丁彬<small>DING BIN</small></span>
+      </a>
+      <a class="back-to-projects" href="../index.html#projects"><span aria-hidden="true">←</span> 项目案例</a>
+    </div>
+  </header>
+  <main class="shell case-page" id="main" tabindex="-1">
+    <article aria-labelledby="case-name">
+      <header class="case-intro">
+        <h1 id="case-name">ROS2 AGV 多传感器融合导航</h1>
+        <p>在 STM32 移动底盘上接入环境观测与运动反馈，让小车能够定位、规划路径并执行运输任务。</p>
+        <ul class="tags" aria-label="项目技术栈">
+          <li class="tag">ROS2 Humble</li><li class="tag">STM32</li><li class="tag">robot_localization</li>
+        </ul>
+        <dl class="case-facts">
+          <div><dt>个人职责</dt><dd>独立接入 STM32 底盘与传感器，联调 ROS2 定位和导航</dd></div>
+          <div><dt>实车验证</dt><dd>完成 200 米连续运输</dd></div>
+        </dl>
+      </header>
+      <!-- case-engineering:start -->
+      <div class="case-engineering">
+        <section class="engineering-section" aria-labelledby="engineering-s02-architecture">
+          <h2 id="engineering-s02-architecture">项目整体架构图</h2>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">环境感知与执行</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>激光雷达</strong><span>采集周围环境的距离观测</span></div>
+                <div class="engineering-connector"><span>环境观测</span></div>
+                <div class="engineering-node"><strong>ROS2 Humble 上位控制</strong><span>联调建图、定位与路径规划</span></div>
+                <div class="engineering-connector"><span>运动指令</span></div>
+                <div class="engineering-node"><strong>STM32 移动底盘</strong><span>执行运输任务中的运动指令</span></div>
+              </div>
+            </div>
+            <div class="engineering-path">
+              <p class="engineering-path-label">运动反馈与定位</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>IMU / 光电编码器</strong><span>采集惯性及底盘运动信息</span></div>
+                <div class="engineering-connector"><span>传感器观测</span></div>
+                <div class="engineering-node"><strong>运动反馈接入</strong><span>为上层定位提供运动观测</span></div>
+                <div class="engineering-connector"><span>运动反馈</span></div>
+                <div class="engineering-node"><strong>ROS2 融合定位</strong><span>联调 EKF 与导航中的定位环节</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s02-communication">
+          <h2 id="engineering-s02-communication">ROS2 节点通信关系图</h2>
+          <p class="engineering-note">图中以功能标记传感器接入、建图和底盘桥接，连线表示导航各层交换的数据。</p>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">环境观测</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>激光雷达接入</strong><span>提供周围环境的扫描数据</span></div>
+                <div class="engineering-connector"><span>激光扫描</span></div>
+                <div class="engineering-node"><strong>建图模块</strong><span>利用环境观测构建地图</span></div>
+                <div class="engineering-connector"><span>环境地图</span></div>
+                <div class="engineering-node"><strong>导航模块</strong><span>使用环境信息规划行驶路径</span></div>
+              </div>
+            </div>
+            <div class="engineering-path">
+              <p class="engineering-path-label">融合定位</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>运动观测接入</strong><span>汇集上层可用的运动反馈</span></div>
+                <div class="engineering-connector"><span>运动观测</span></div>
+                <div class="engineering-node"><strong>robot_localization EKF</strong><span>生成融合运动估计</span></div>
+                <div class="engineering-connector"><span>融合估计</span></div>
+                <div class="engineering-node"><strong>定位与导航</strong><span>利用估计结果衔接定位和规划</span></div>
+              </div>
+            </div>
+            <div class="engineering-path">
+              <p class="engineering-path-label">底盘执行</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>导航控制</strong><span>根据运输任务和定位结果组织运动</span></div>
+                <div class="engineering-connector"><span>运动指令</span></div>
+                <div class="engineering-node"><strong>底盘通信</strong><span>将运动指令传到底盘</span></div>
+                <div class="engineering-connector"><span>底盘控制</span></div>
+                <div class="engineering-node"><strong>STM32</strong><span>驱动移动底盘执行</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s02-modules">
+          <h2 id="engineering-s02-modules">软件模块设计</h2>
+          <dl class="engineering-modules">
+            <div><dt>环境感知</dt><dd>接入激光雷达，将周围环境观测交给建图和导航。</dd></div>
+            <div><dt>运动观测</dt><dd>接入 IMU 和光电编码器，为上层提供惯性与底盘运动反馈。</dd></div>
+            <div><dt>融合定位</dt><dd>使用 robot_localization 的 EKF 处理运动观测并输出融合估计。</dd></div>
+            <div><dt>路径规划</dt><dd>把环境地图、融合定位与运输目标衔接到导航流程中。</dd></div>
+            <div><dt>底盘控制</dt><dd>以 STM32 为底盘控制核心，执行上层运动指令。</dd></div>
+          </dl>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s02-interfaces">
+          <h2 id="engineering-s02-interfaces">硬件通信接口设计</h2>
+          <table class="engineering-interfaces">
+            <thead><tr><th scope="col">设备或端点</th><th scope="col">通信接口</th><th scope="col">信号或数据</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">激光雷达 → 上位控制</th><td>扫描数据接入</td><td>周边环境距离观测</td></tr>
+              <tr><th scope="row">IMU → 运动反馈接入</th><td>惯性测量接入</td><td>惯性或姿态观测</td></tr>
+              <tr><th scope="row">光电编码器 → 底盘反馈</th><td>运动测量输入</td><td>编码器读数与底盘运动信息</td></tr>
+              <tr><th scope="row">ROS2 上位控制 ↔ STM32</th><td>底盘指令与反馈接口</td><td>运动指令与底盘反馈</td></tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s02-key">
+          <h2 id="engineering-s02-key">关键功能与技术说明</h2>
+          <dl class="engineering-key">
+            <div><dt>EKF 融合定位</dt><dd>EKF 先按运动模型预测状态，再用可用观测修正估计，将不同来源的运动观测衔接到同一个状态估计中。定位与导航联调时使用融合后的运动估计。</dd></div>
+            <div><dt>建图与运动观测分工</dt><dd>激光扫描用于观察环境并支持建图，IMU 和编码器用于提供运动侧信息。导航将地图、位置估计与运输目标关联后，再将运动指令交给 STM32 底盘。</dd></div>
+          </dl>
+        </section>
+      </div>
+      <!-- case-engineering:end -->
+    </article>
+    <nav class="case-section related-cases" aria-labelledby="related-title">
+      <h2 id="related-title">代表案例</h2>
+      <ul>
+        <li><a href="drain-inspection.html">排水管道检测机器人</a></li>
+        <li><a href="fishing-boat-control.html">海钓船用顶流机</a></li>
+        <li><a href="ros1-uav.html">ROS1 自主导航无人机</a></li>
+      </ul>
+    </nav>
+  </main>
+</body>
+</html>

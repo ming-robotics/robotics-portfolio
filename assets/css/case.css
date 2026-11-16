@@ -1,0 +1,61 @@
+.case-nav .back-to-projects {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: 14px;
+  font-weight: 650;
+}
+.back-to-projects:hover, .related-cases a:hover {
+  color: var(--orange);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.case-page {
+  max-width: 960px;
+  padding-block: clamp(34px, 7vw, 72px) clamp(44px, 8vw, 84px);
+}
+.case-intro h1 {
+  font-size: clamp(34px, 6.8vw, 64px);
+  line-height: 1.14;
+  letter-spacing: -.04em;
+}
+.case-intro > p {
+  max-width: 44em;
+  margin-top: 14px;
+  color: var(--muted);
+}
+.case-intro .tags { margin-block: 18px; }
+.case-intro .case-facts { margin: 0; }
+.case-section { margin-top: clamp(30px, 5vw, 52px); }
+.case-section h2 {
+  font-size: clamp(23px, 3.4vw, 34px);
+  line-height: 1.25;
+  letter-spacing: -.025em;
+}
+.case-section > p {
+  max-width: 48em;
+  margin: 10px 0 0;
+  color: var(--muted);
+}
+.related-cases {
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+}
+.related-cases h2 { font-size: 19px; }
+.related-cases ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 20px;
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.related-cases a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 14px;
+  font-weight: 650;
+}
+
