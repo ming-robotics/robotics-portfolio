@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="丁彬的给水管道检测机器人案例，介绍系缆双路推进、检测采样、声学筛查与回收流程。">
+  <meta name="theme-color" content="#f7f6f0">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="给水管道检测机器人｜丁彬">
+  <meta property="og:description" content="丁彬的给水管道检测机器人案例，介绍系缆双路推进、检测采样、声学筛查与回收流程。">
+  <meta property="og:url" content="https://ming-robotics.github.io/robotics-portfolio/cases/water-pipe-inspection.html">
+  <meta property="og:image" content="https://ming-robotics.github.io/robotics-portfolio/art/portfolio-social.png">
+  <meta property="og:image:alt" content="丁彬的机器人软件开发作品集">
+  <title>给水管道检测机器人｜丁彬</title>
+  <link rel="canonical" href="https://ming-robotics.github.io/robotics-portfolio/cases/water-pipe-inspection.html">
+  <link rel="icon" type="image/svg+xml" href="../art/mark.svg">
+  <link rel="stylesheet" href="../assets/css/styles.css?v=portfolio-7">
+  <link rel="stylesheet" href="../assets/css/case.css?v=portfolio-7">
+</head>
+<body>
+  <a class="skip" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <div class="shell nav-wrap case-nav">
+      <a class="brand" href="../index.html" aria-label="丁彬，返回作品集首页">
+        <img src="../art/mark.svg" width="36" height="36" alt="">
+        <span>丁彬<small>DING BIN</small></span>
+      </a>
+      <a class="back-to-projects" href="../index.html#projects"><span aria-hidden="true">←</span> 项目案例</a>
+    </div>
+  </header>
+  <main class="shell case-page" id="main" tabindex="-1" aria-labelledby="case-name">
+    <article aria-labelledby="case-name">
+      <header class="case-intro">
+        <h1 id="case-name">给水管道检测机器人</h1>
+        <p>面向带压给水管段的漏点排查，方案通过系缆接入推进、压力采集和绕线设备。</p>
+        <ul class="tags" aria-label="项目技术栈">
+          <li class="tag">系缆控制</li><li class="tag">双路推进</li><li class="tag">水听器</li>
+        </ul>
+        <dl class="case-facts">
+          <div><dt>个人职责</dt><dd>参与机器人本体侧推进指令与检测流程的对接。</dd></div>
+          <div><dt>项目内容</dt><dd>双路推进与检测采样配合</dd></div>
+        </dl>
+      </header>
+      <!-- case-engineering:start -->
+      <div class="case-engineering">
+        <section class="engineering-section" aria-labelledby="engineering-w04-architecture">
+          <h2 id="engineering-w04-architecture">项目整体架构图</h2>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">带压管段检测</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>地面工控机</strong><span>组织巡航、驻留采样及回收阶段</span></div>
+                <div class="engineering-connector"><span>推进与采样调度</span></div>
+                <div class="engineering-node"><strong>系缆机器人</strong><span>双路推进，携带水听器及压力采集装置</span></div>
+                <div class="engineering-connector"><span>分阶段观测</span></div>
+                <div class="engineering-node"><strong>同步采样记录</strong><span>对齐音频、压力、姿态、放缆量与推进速度</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-w04-communication">
+          <h2 id="engineering-w04-communication">ROS2 节点通信关系图</h2>
+          <p class="engineering-note">本图表示方案中的节点职责与数据流。</p>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">推进与回收</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>检测任务节点</strong><span>管理巡航、驻留和回收阶段</span></div>
+                <div class="engineering-connector"><span>阶段指令</span></div>
+                <div class="engineering-node"><strong>系缆设备接口</strong><span>连接推进驱动器、压力仪表和绕线器</span></div>
+                <div class="engineering-connector"><span>设备控制</span></div>
+                <div class="engineering-node"><strong>本体与绕线设备</strong><span>执行双路推进及收放线</span></div>
+              </div>
+            </div>
+            <div class="engineering-path">
+              <p class="engineering-path-label">声学分析</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>音频与运行数据采集</strong><span>读取水听器音频及运行工况</span></div>
+                <div class="engineering-connector"><span>音频、压力与状态</span></div>
+                <div class="engineering-node"><strong>同步记录模块</strong><span>按阶段组织数据并附估计里程</span></div>
+                <div class="engineering-connector"><span>带里程的采样片段</span></div>
+                <div class="engineering-node"><strong>声谱分析与筛查</strong><span>为疑似泄漏片段安排复测优先级</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-w04-modules">
+          <h2 id="engineering-w04-modules">软件模块设计</h2>
+          <dl class="engineering-modules">
+            <div><dt>检测阶段编排</dt><dd>组织巡航、驻留采样和回收，关联推进状态与采样记录。</dd></div>
+            <div><dt>音频与压力采集</dt><dd>分别接入水听器音频和压力变送器，关联姿态、放缆量与推进速度。</dd></div>
+            <div><dt>检测里程估计</dt><dd>使用入口和可识别管件作为参考，结合放缆量及姿态估计检测区间。</dd></div>
+            <div><dt>声学筛查</dt><dd>通过声谱图与压力瞬态辅助识别疑似泄漏片段和应复测区间。</dd></div>
+          </dl>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-w04-interfaces">
+          <h2 id="engineering-w04-interfaces">硬件通信接口设计</h2>
+          <table class="engineering-interfaces">
+            <thead><tr><th scope="col">设备或端点</th><th scope="col">通信接口</th><th scope="col">信号或数据</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">双路推进驱动器与工控机</th><td>系缆控制链路</td><td>推进指令与推进速度</td></tr>
+              <tr><th scope="row">压力变送器与工控机</th><td>系缆采集链路</td><td>压力及瞬态变化</td></tr>
+              <tr><th scope="row">绕线器与计米仪表</th><td>Modbus RTU</td><td>收放线指令与放缆计米</td></tr>
+              <tr><th scope="row">水听器与工控机</th><td>独立音频采集模块</td><td>管道水声采样</td></tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-w04-key">
+          <h2 id="engineering-w04-key">关键功能与技术说明</h2>
+          <dl class="engineering-key">
+            <div><dt>按推进工况建立噪声基线</dt><dd>在声学筛查中区分巡航和驻留状态，根据同类推进工况对照背景噪声，并结合压力瞬态标记可能受阀门操作干扰的片段。</dd></div>
+            <div><dt>按里程组织复测</dt><dd>把可疑声谱与估计里程带关联，结合多次采样结果安排复测，报告保留原始音频和声谱图。</dd></div>
+          </dl>
+        </section>
+      </div>
+      <!-- case-engineering:end -->
+    </article>
+    <nav class="case-section related-cases" aria-labelledby="related-title">
+      <h2 id="related-title">其他项目案例</h2>
+      <ul>
+        <li><a href="drain-inspection.html">排水管道检测机器人</a></li>
+        <li><a href="net-fishing-usv.html">拉网捕鱼无人船</a></li>
+        <li><a href="wind-blade-inspection.html">风电叶片检测机器人</a></li>
+      </ul>
+    </nav>
+  </main>
+</body>
+</html>

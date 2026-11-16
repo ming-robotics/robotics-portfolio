@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="丁彬独立完成的空地协同智能消防系统，联调无人机巡逻、火源位置交接与地面消防车响应。">
+  <meta name="theme-color" content="#f7f6f0">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="空地协同智能消防系统｜丁彬">
+  <meta property="og:description" content="丁彬独立完成的空地协同智能消防系统，联调无人机巡逻、火源位置交接与地面消防车响应。">
+  <meta property="og:url" content="https://ming-robotics.github.io/robotics-portfolio/cases/air-ground-firefighting.html">
+  <meta property="og:image" content="https://ming-robotics.github.io/robotics-portfolio/art/portfolio-social.png">
+  <meta property="og:image:alt" content="丁彬的机器人软件开发作品集">
+  <title>空地协同智能消防系统｜丁彬</title>
+  <link rel="canonical" href="https://ming-robotics.github.io/robotics-portfolio/cases/air-ground-firefighting.html">
+  <link rel="icon" type="image/svg+xml" href="../art/mark.svg">
+  <link rel="stylesheet" href="../assets/css/styles.css?v=portfolio-7">
+  <link rel="stylesheet" href="../assets/css/case.css?v=portfolio-7">
+</head>
+<body>
+  <a class="skip" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <div class="shell nav-wrap case-nav">
+      <a class="brand" href="../index.html" aria-label="丁彬，返回作品集首页">
+        <img src="../art/mark.svg" width="36" height="36" alt="">
+        <span>丁彬<small>DING BIN</small></span>
+      </a>
+      <a class="back-to-projects" href="../index.html#projects"><span aria-hidden="true">←</span> 项目案例</a>
+    </div>
+  </header>
+  <main class="shell case-page" id="main" tabindex="-1" aria-labelledby="case-name">
+    <article aria-labelledby="case-name">
+      <header class="case-intro">
+        <h1 id="case-name">空地协同智能消防系统</h1>
+        <p>搭建无人机与地面消防车协同原型，在测试场地完成模拟火情发现与地面响应。</p>
+        <ul class="tags" aria-label="项目技术栈">
+          <li class="tag">四旋翼</li><li class="tag">巡逻规划</li><li class="tag">空地协同</li>
+        </ul>
+        <dl class="case-facts">
+          <div><dt>个人职责</dt><dd>校园独立开发</dd></div>
+          <div><dt>验证情况</dt><dd>模拟火情协同联调</dd></div>
+        </dl>
+      </header>
+      <!-- case-engineering:start -->
+      <div class="case-engineering">
+        <section class="engineering-section" aria-labelledby="engineering-s05-architecture">
+          <h2 id="engineering-s05-architecture">项目整体架构图</h2>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">空中巡逻与地面处置</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>四旋翼巡逻</strong><span>按地面覆盖宽度安排巡逻航线</span></div>
+                <div class="engineering-connector"><span>发现模拟火情</span></div>
+                <div class="engineering-node"><strong>模拟火情响应</strong><span>执行初步处置并发送火源位置</span></div>
+                <div class="engineering-connector"><span>火源位置</span></div>
+                <div class="engineering-node"><strong>地面消防车</strong><span>接收位置，前往目标点进行处置</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s05-communication">
+          <h2 id="engineering-s05-communication">空地目标交接关系图</h2>
+          <p class="engineering-note">空中端通过火源位置把巡逻任务与地面处置任务衔接起来。</p>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">位置交接</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>无人机任务控制</strong><span>发现模拟火情后发出位置</span></div>
+                <div class="engineering-connector"><span>火源位置</span></div>
+                <div class="engineering-node"><strong>车辆目标接收</strong><span>接收空中端发送的目标位置</span></div>
+                <div class="engineering-connector"><span>行驶目标</span></div>
+                <div class="engineering-node"><strong>车辆行动控制</strong><span>将目标位置用于驶向目标点</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s05-modules">
+          <h2 id="engineering-s05-modules">软件模块设计</h2>
+          <dl class="engineering-modules">
+            <div><dt>巡逻航线规划</dt><dd>按任务设定的地面覆盖宽度布置航线。</dd></div>
+            <div><dt>空中巡逻执行</dt><dd>由四旋翼执行航线，并通过下视航迹指示装置辅助观察覆盖过程。</dd></div>
+            <div><dt>火情响应与转交</dt><dd>无人机发现模拟火情后执行初步处置，并发送火源位置。</dd></div>
+            <div><dt>地面车辆执行</dt><dd>接收目标位置，驱动地面消防车驶向模拟火源。</dd></div>
+          </dl>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s05-interfaces">
+          <h2 id="engineering-s05-interfaces">硬件通信接口设计</h2>
+          <table class="engineering-interfaces">
+            <thead><tr><th scope="col">设备或端点</th><th scope="col">通信接口</th><th scope="col">信号或数据</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">巡逻任务 → 四旋翼平台</th><td>航线输入</td><td>巡逻航线</td></tr>
+              <tr><th scope="row">无人机 → 地面消防车</th><td>目标位置传递</td><td>模拟火源位置</td></tr>
+              <tr><th scope="row">地面控制 → 消防车底盘</th><td>运动控制输出</td><td>驶向目标所需的行驶动作</td></tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s05-key">
+          <h2 id="engineering-s05-key">关键功能与技术说明</h2>
+          <dl class="engineering-key">
+            <div><dt>从火情发现到车辆到场</dt><dd>联调用例串起发现模拟火情、发送位置、车辆接收和车辆到场四个环节，逐步检查空中事件能否触发地面任务。</dd></div>
+          </dl>
+        </section>
+      </div>
+      <!-- case-engineering:end -->
+    </article>
+    <nav class="case-section related-cases" aria-labelledby="related-title">
+      <h2 id="related-title">其他项目案例</h2>
+      <ul>
+        <li><a href="coverage-seeding-uav.html">植保飞行器全覆盖飞播系统</a></li>
+        <li><a href="ros1-uav.html">ROS1 自主导航无人机</a></li>
+        <li><a href="agv-navigation.html">ROS2 AGV 多传感器融合导航</a></li>
+      </ul>
+    </nav>
+  </main>
+</body>
+</html>

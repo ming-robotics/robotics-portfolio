@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="丁彬的机器人软件开发简历，涵盖排水管检设备联调、海钓船推进与转向控制和 ROS1 无人机自主导航。">
+  <meta name="description" content="丁彬的机器人软件开发简历：1 年以上 ROS1/ROS2 开发经验，3 款商用机器人落地，涵盖工业通信、运动控制、多传感器融合与实机交付。">
   <meta name="theme-color" content="#f7f6f0">
   <meta property="og:type" content="website">
   <meta property="og:title" content="丁彬｜机器人软件开发简历">
-  <meta property="og:description" content="丁彬的工作经历、实机项目和技术栈。">
+  <meta property="og:description" content="1 年以上 ROS1/ROS2 开发经验，3 款商用机器人落地。查看工作经历、项目成果与专业技能。">
   <meta property="og:url" content="https://ming-robotics.github.io/robotics-portfolio/resume.html">
   <meta property="og:image" content="https://ming-robotics.github.io/robotics-portfolio/art/portfolio-social.png">
   <meta property="og:image:alt" content="丁彬机器人软件开发作品集">
   <title>丁彬｜机器人软件开发简历</title>
   <link rel="icon" type="image/svg+xml" href="art/mark.svg">
   <link rel="canonical" href="https://ming-robotics.github.io/robotics-portfolio/resume.html">
-  <link rel="stylesheet" href="assets/css/styles.css?v=portfolio-5">
-  <link rel="stylesheet" href="assets/css/resume.css">
+  <link rel="stylesheet" href="assets/css/styles.css?v=portfolio-7">
+  <link rel="stylesheet" href="assets/css/resume.css?v=resume-2">
   <script src="assets/js/resume.js" defer></script>
 </head>
 <body>
@@ -23,59 +23,171 @@
   <header class="topbar">
     <div class="resume-wrap resume-toolbar">
       <a class="resume-home" href="index.html"><span aria-hidden="true">←</span> 返回作品集</a>
+      <nav class="resume-nav" aria-label="简历章节">
+        <a href="#summary">个人总结</a>
+        <a href="#skills">专业技能</a>
+        <a href="#work">工作经历</a>
+        <a href="#projects">项目经历</a>
+        <a href="#education">教育奖项</a>
+      </nav>
       <button class="button primary resume-print" type="button" hidden>打印 / 保存为 PDF</button>
     </div>
   </header>
+
   <main class="resume-wrap resume-sheet" id="main" tabindex="-1" aria-labelledby="resume-title">
     <header class="resume-header">
-      <h1 id="resume-title">丁彬</h1>
-      <p class="resume-role">ROS1 / ROS2 机器人软件开发工程师</p>
-      <p class="resume-summary">参与船舶推进、转向及管道巡检设备的本体控制和实机联调。独立完成 ROS1 无人机自主导航和 ROS2 AGV 多传感器融合导航。</p>
+      <div class="resume-identity">
+        <div>
+          <h1 id="resume-title">丁彬</h1>
+          <p class="resume-role">机器人软件开发工程师</p>
+          <p class="resume-intent"><span>ROS1 / ROS2</span><span>当前状态：离职</span><span>意向城市：南昌</span></p>
+        </div>
+        <img class="resume-portrait" src="art/resume-portrait.png" width="297" height="356" alt="丁彬证件照" fetchpriority="high">
+      </div>
+      <p class="resume-summary">1 年以上机器人软件开发经验，专注工业通信、运动控制与实机部署交付，参与 3 款商用机器人从开发到落地。</p>
       <div class="resume-links">
+        <a href="tel:+8619970209233"><span class="resume-link-label">电话</span>19970209233</a>
+        <a href="mailto:2083417753@qq.com"><span class="resume-link-label">邮箱</span>2083417753@qq.com</a>
         <a href="https://ming-robotics.github.io/robotics-portfolio/"><span class="resume-screen-url">在线作品集</span><span class="resume-print-url">ming-robotics.github.io/robotics-portfolio</span></a>
         <a href="https://github.com/ming-robotics"><span class="resume-screen-url">GitHub · ming-robotics</span><span class="resume-print-url">github.com/ming-robotics</span></a>
       </div>
     </header>
-    <section class="resume-section" aria-labelledby="work-title">
+
+    <section class="resume-section" id="summary" aria-labelledby="summary-title">
+      <h2 id="summary-title">个人总结</h2>
+      <ul class="resume-highlights">
+        <li><strong>机器人软件开发：</strong>以 C++ / Python 为主，熟悉 Linux 工控环境与机器人软硬件集成，具备 ROS1 / ROS2 项目实机部署经验。</li>
+        <li><strong>商用产品交付：</strong>负责 3 款商用机器人的软件开发与落地，覆盖 CAN、RS-485、Modbus RTU 接入、运动控制、任务编排及分级异常保护。</li>
+        <li><strong>完整工程实践：</strong>具备多传感器融合、实机联调标定、作业数据分析与故障溯源能力，覆盖需求分析、软件开发到现场部署交付全流程。</li>
+      </ul>
+    </section>
+
+    <section class="resume-section" id="skills" aria-labelledby="skills-title">
+      <h2 id="skills-title">专业技能</h2>
+      <div class="resume-skill-grid">
+        <article>
+          <h3>ROS 软件开发</h3>
+          <p>ROS1 Noetic / ROS2 Humble、C++ / Python 节点与功能包、Topic / Service / Action、TF2、Gazebo 仿真与实机联调。</p>
+        </article>
+        <article>
+          <h3>ROS 工程调试</h3>
+          <p>catkin / colcon、Launch 配置、rosbag 录制回放、RViz / rqt 可视化调试，以及系统集成、问题排查与离线数据分析。</p>
+        </article>
+        <article>
+          <h3>Linux 与开发环境</h3>
+          <p>Linux、Shell、Docker、SSH / SCP、udev 设备规则，以及软件依赖管理、远程调试和开发环境部署。</p>
+        </article>
+        <article>
+          <h3>工业通信与运动控制</h3>
+          <p>CAN、RS-485、Modbus RTU、ros2_control 硬件接口封装；推进驱动器、伺服电机、工业相机及远程 I/O 接入。</p>
+        </article>
+        <article>
+          <h3>传感器融合与自主导航</h3>
+          <p>激光雷达、IMU、轮式编码器、GNSS；EKF、AMCL、GMapping / Cartographer、move_base / Nav2 配置与调试。</p>
+        </article>
+        <article>
+          <h3>机器视觉与 AI 应用</h3>
+          <p>OpenCV 图像处理、YOLO 模型训练与数据集标注、OCR 文字识别及工程化应用。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="resume-section" id="work" aria-labelledby="work-title">
       <h2 id="work-title">工作经历</h2>
       <div class="resume-heading">
         <h3>广州市逐电科技有限公司 · 机器人软件开发工程师</h3>
         <p class="resume-date"><time datetime="2025-08">2025.08</time> — <time datetime="2026-11">2026.11</time></p>
       </div>
+      <p class="resume-work-summary">负责海洋作业、市政检测类水下机器人的系统开发与迭代，覆盖硬件接口、任务逻辑、运动控制、实机联调及现场交付。</p>
       <ul>
-        <li>负责机器人本体侧的指令执行与设备联调，涉及船舶推进、转向及管检机器人的行走、升降和拍摄动作。</li>
-        <li>参与拉网捕鱼无人船的差速推进与作业联调，系统已用于实际捕鱼作业。</li>
+        <li>主导海钓船稳流设备、拉网捕鱼无人船、排水管道检测机器人 3 款核心产品的 ROS1 / ROS2 系统开发，完成任务编排、运动控制与异常联锁逻辑设计，均投入商用作业。</li>
+        <li>基于 ros2_control 统一封装 CAN、RS-485、Modbus RTU 接口，实现推进驱动器、转向伺服、工业相机、称重仪表等设备的标准化接入，构建指令超时、限位联锁、通信失联的分级异常保护机制。</li>
+        <li>搭建 rosbag / rosbag2 作业数据复盘体系，关联航迹、视频、声波等多源时序数据，结合大模型筛查异常片段并生成标准化报告，提升现场问题定位效率。</li>
+        <li>设计可复用的绕线器驱动、工业设备通信网关及结构化数据解析模块，统一设备指令集、数据格式与事件模型，在排水、给水、风电等项目中复用。</li>
+        <li>部署管道缺陷分割、声学泄漏检测、叶片损伤识别模型，实现缺陷按里程归档与置信度输出，辅助人工复核。</li>
       </ul>
     </section>
-    <section class="resume-section resume-projects" aria-labelledby="projects-title">
-      <h2 id="projects-title">代表项目</h2>
+
+    <section class="resume-section resume-projects" id="projects" aria-labelledby="projects-title">
+      <div class="resume-page-continuation" aria-hidden="true"><span>丁彬</span><span>机器人软件开发工程师</span></div>
+      <h2 id="projects-title">项目经历</h2>
+
       <article>
-        <h3><a href="cases/drain-inspection.html">排水管道检测机器人</a></h3>
-        <p>负责本体侧的指令执行与设备联调，通过系缆配合上位机执行底盘行走、升降和拍摄。系统已用于正式排水管道检测。</p>
+        <div class="resume-heading">
+          <h3><a href="cases/drain-inspection.html">排水管道检测机器人</a><span class="resume-project-role"> · 机器人软件开发负责人</span></h3>
+          <p class="resume-date"><time datetime="2025-10">2025.10</time> — <time datetime="2026-10">2026.10</time></p>
+        </div>
+        <p class="resume-project-context">面向市政排水管道检测，开发系缆式机器人系统，替代人工完成巡检与缺陷初筛。</p>
+        <ul>
+          <li>基于 ROS2 Humble，通过 RS-485 / Modbus RTU 接入底盘、升降机构、云台与绕线器，联动工业相机完成沿程录像、停驻拍摄的任务编排。</li>
+          <li>设计时间戳关联机制，融合视频帧、IMU、轮编码器与放缆计米构建影像索引，通过检查井与管道接缝校正累计里程误差，支持按井段 / 里程回看。</li>
+        </ul>
+        <p class="resume-result"><strong>项目成果：</strong>系统已投入正式管检作业，缺陷筛查功能通过现场数据验证，可辅助人工初筛并减少视频回看工作量。</p>
       </article>
+
       <article>
-        <h3><a href="cases/fishing-boat-control.html">海钓船用顶流机</a></h3>
-        <p>负责船体侧的推进与转向指令执行，联调 CAN 推进驱动器和 RS-485 转向伺服。系统在有风浪的近海完成 3 小时实船稳船测试。</p>
+        <div class="resume-heading">
+          <h3><a href="cases/fishing-boat-control.html">海钓船用顶流机</a><span class="resume-project-role"> · 机器人软件开发负责人</span></h3>
+          <p class="resume-date"><time datetime="2025-08">2025.08</time> — <time datetime="2026-07">2026.07</time></p>
+        </div>
+        <p class="resume-project-context">面向近海海钓场景，开发船舶定点驻留控制系统，保障风浪工况下的垂钓作业稳定性。</p>
+        <ul>
+          <li>基于 ROS2 Humble 开发稳泊、短距移钓、手动接管功能，使用 Action 管理任务并反馈位置偏差、漂移方向与推进负载。</li>
+          <li>基于 ros2_control 封装 CAN 推进驱动器与 RS-485 转向伺服接口，根据位置和航向偏差解算转速与舵角，形成闭环稳船控制。</li>
+        </ul>
+        <p class="resume-result"><strong>项目成果：</strong>完成近海 3 小时实船稳船测试，有风浪工况下最大漂移偏差控制在 1.5 米以内。</p>
       </article>
+
       <article>
-        <h3><a href="cases/ros1-uav.html">ROS1 自主导航无人机</a></h3>
-        <p>独立使用 C++ 开发任务控制和传感器处理节点，通过 MAVROS 联通 ROS1 与飞控。在 Gazebo 联调后，实飞验证自主巡航、避障和定点起降。</p>
+        <div class="resume-heading">
+          <h3><a href="cases/net-fishing-usv.html">拉网捕鱼无人船</a><span class="resume-project-role"> · 机器人软件开发负责人</span></h3>
+          <p class="resume-date"><time datetime="2025-09">2025.09</time> — <time datetime="2026-03">2026.03</time></p>
+        </div>
+        <p class="resume-project-context">面向近海渔业捕捞，开发无人船拉网作业系统，实现布网过程的自动化航行控制。</p>
+        <ul>
+          <li>基于 ROS1 Noetic 编排拉网任务，通过 actionlib 管理布网阶段、航段进度与任务取消，支持岸端远程干预。</li>
+          <li>融合 GNSS 与 IMU 数据，通过 SocketCAN 向左右推进驱动器下发差速转速指令，并根据牵引绳张力动态调整航行速度。</li>
+        </ul>
+        <p class="resume-result"><strong>项目成果：</strong>系统已投入实际捕鱼作业，可稳定完成预设航线布网任务，降低人工驾船作业强度。</p>
       </article>
     </section>
-    <section class="resume-section" aria-labelledby="skills-title">
-      <h2 id="skills-title">技术栈</h2>
-      <p>ROS1 / ROS2 Humble、C++ / Python、Linux、Gazebo、MAVROS、robot_localization、CAN、RS-485、Modbus RTU</p>
-    </section>
-    <section class="resume-section" aria-labelledby="education-title">
-      <h2 id="education-title">教育与竞赛</h2>
+
+    <section class="resume-section" id="education" aria-labelledby="education-title">
+      <h2 id="education-title">教育经历</h2>
       <div class="resume-heading">
         <h3>江西师范大学科学技术学院 · 电子信息工程本科</h3>
-        <p class="resume-date"><time datetime="2022">2022</time> — <time datetime="2026">2026</time></p>
+        <p class="resume-date"><time datetime="2022-09">2022.09</time> — <time datetime="2026-06">2026.06</time></p>
       </div>
       <ul>
-        <li>全国大学生电子设计竞赛全国二等奖（2025）</li>
-        <li>蓝桥杯全国大学生软件和信息技术大赛嵌入式赛项全国二等奖（2025）</li>
+        <li>毕业设计：基于 ROS1 Noetic 的四旋翼无人机自主定位与导航系统，实飞验证自主巡航、避障与定点起降。</li>
+        <li>核心课程：C++ 程序设计、数字图像处理、单片机原理、嵌入式系统、Linux 系统编程、ROS 开发、SLAM 与自主导航。</li>
       </ul>
+    </section>
+
+    <section class="resume-section" id="awards" aria-labelledby="awards-title">
+      <h2 id="awards-title">竞赛奖项</h2>
+      <ul class="resume-awards">
+        <li><time datetime="2025-09">2025.09</time><span>全国大学生电子设计竞赛 · 全国二等奖</span></li>
+        <li><time datetime="2025-08">2025.08</time><span>全国大学生电子设计竞赛 · 江西赛区一等奖</span></li>
+        <li><time datetime="2025-08">2025.08</time><span>全国大学生嵌入式芯片与系统设计竞赛 · 江西赛区一等奖</span></li>
+        <li><time datetime="2025-07">2025.07</time><span>蓝桥杯全国软件和信息技术大赛 · 全国二等奖（嵌入式赛项）</span></li>
+        <li><time datetime="2025-05">2025.05</time><span>蓝桥杯全国软件和信息技术大赛 · 江西赛区一等奖</span></li>
+        <li><time datetime="2024-08">2024.08</time><span>全国大学生电子设计竞赛 · 江西赛区一等奖</span></li>
+        <li><time datetime="2024-05">2024.05</time><span>蓝桥杯全国软件和信息技术大赛 · 江西赛区二等奖</span></li>
+      </ul>
+    </section>
+
+    <section class="resume-section resume-portfolio" aria-labelledby="portfolio-title">
+      <div class="resume-portfolio-panel">
+        <div>
+          <h2 id="portfolio-title">完整作品集</h2>
+          <p>查看 15 项机器人项目、系统架构、通信关系与实机验证详情。</p>
+          <a href="https://ming-robotics.github.io/robotics-portfolio/"><span class="resume-screen-url">打开在线作品集</span><span class="resume-print-url">ming-robotics.github.io/robotics-portfolio</span></a>
+        </div>
+        <a class="resume-qr-link" href="https://ming-robotics.github.io/robotics-portfolio/" aria-label="打开在线作品集">
+          <img src="art/portfolio-qr.png" width="246" height="246" alt="在线作品集二维码" loading="lazy" decoding="async">
+        </a>
+      </div>
     </section>
   </main>
 </body>

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="丁彬独立完成的自动泊车电动车，验证倒车入库、侧方入库及对应出库的单项与连续执行。">
+  <meta name="theme-color" content="#f7f6f0">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="自动泊车电动车｜丁彬">
+  <meta property="og:description" content="丁彬独立完成的自动泊车电动车，验证倒车入库、侧方入库及对应出库的单项与连续执行。">
+  <meta property="og:url" content="https://ming-robotics.github.io/robotics-portfolio/cases/autonomous-parking-car.html">
+  <meta property="og:image" content="https://ming-robotics.github.io/robotics-portfolio/art/portfolio-social.png">
+  <meta property="og:image:alt" content="丁彬的机器人软件开发作品集">
+  <title>自动泊车电动车｜丁彬</title>
+  <link rel="canonical" href="https://ming-robotics.github.io/robotics-portfolio/cases/autonomous-parking-car.html">
+  <link rel="icon" type="image/svg+xml" href="../art/mark.svg">
+  <link rel="stylesheet" href="../assets/css/styles.css?v=portfolio-7">
+  <link rel="stylesheet" href="../assets/css/case.css?v=portfolio-7">
+</head>
+<body>
+  <a class="skip" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <div class="shell nav-wrap case-nav">
+      <a class="brand" href="../index.html" aria-label="丁彬，返回作品集首页">
+        <img src="../art/mark.svg" width="36" height="36" alt="">
+        <span>丁彬<small>DING BIN</small></span>
+      </a>
+      <a class="back-to-projects" href="../index.html#projects"><span aria-hidden="true">←</span> 项目案例</a>
+    </div>
+  </header>
+  <main class="shell case-page" id="main" tabindex="-1" aria-labelledby="case-name">
+    <article aria-labelledby="case-name">
+      <header class="case-intro">
+        <h1 id="case-name">自动泊车电动车</h1>
+        <p>在测试泊车场地，让电动小车根据车载传感器反馈执行两种入库和出库操作。</p>
+        <ul class="tags" aria-label="项目技术栈">
+          <li class="tag">电动车底盘</li><li class="tag">车载传感器</li><li class="tag">泊车控制</li>
+        </ul>
+        <dl class="case-facts">
+          <div><dt>个人职责</dt><dd>校园独立开发</dd></div>
+          <div><dt>验证情况</dt><dd>入库与出库实车测试</dd></div>
+        </dl>
+      </header>
+      <!-- case-engineering:start -->
+      <div class="case-engineering">
+        <section class="engineering-section" aria-labelledby="engineering-s08-architecture">
+          <h2 id="engineering-s08-architecture">项目整体架构图</h2>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">泊车任务执行</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>泊车任务选择</strong><span>选择倒车、侧方或连续执行</span></div>
+                <div class="engineering-connector"><span>泊车模式</span></div>
+                <div class="engineering-node"><strong>泊车任务控制</strong><span>组织入库、停车和出库动作</span></div>
+                <div class="engineering-connector"><span>运动指令</span></div>
+                <div class="engineering-node"><strong>电动车底盘</strong><span>执行转向与行驶</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s08-communication">
+          <h2 id="engineering-s08-communication">车载感知与底盘控制关系图</h2>
+          <p class="engineering-note">泊车控制使用车载传感器反馈，按当前入库或出库阶段驱动底盘。</p>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">传感器反馈与运动输出</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>车载传感器</strong><span>提供泊车过程中的反馈</span></div>
+                <div class="engineering-connector"><span>车载传感器反馈</span></div>
+                <div class="engineering-node"><strong>泊车运动控制</strong><span>按反馈安排入库和出库动作</span></div>
+                <div class="engineering-connector"><span>转向与行驶动作</span></div>
+                <div class="engineering-node"><strong>移动底盘</strong><span>执行转向、行驶和停车</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s08-modules">
+          <h2 id="engineering-s08-modules">软件模块设计</h2>
+          <dl class="engineering-modules">
+            <div><dt>车载感知</dt><dd>为泊车运动判断提供传感器反馈。</dd></div>
+            <div><dt>倒车泊车流程</dt><dd>组织倒车入库、停车及对应的出库动作。</dd></div>
+            <div><dt>侧方泊车流程</dt><dd>组织侧方入库、停车及对应的出库动作。</dd></div>
+            <div><dt>连续任务编排</dt><dd>在单项流程可独立执行的基础上，按顺序连接两种泊车任务。</dd></div>
+          </dl>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s08-interfaces">
+          <h2 id="engineering-s08-interfaces">硬件通信接口设计</h2>
+          <table class="engineering-interfaces">
+            <thead><tr><th scope="col">设备或端点</th><th scope="col">通信接口</th><th scope="col">信号或数据</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">车载传感器 → 控制器</th><td>传感器反馈输入</td><td>用于泊车动作判断的车载反馈</td></tr>
+              <tr><th scope="row">控制器 → 转向执行机构</th><td>转向控制输出</td><td>入库和出库阶段的转向动作</td></tr>
+              <tr><th scope="row">控制器 → 底盘驱动</th><td>行驶控制输出</td><td>各泊车阶段的行驶和停车动作</td></tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s08-key">
+          <h2 id="engineering-s08-key">关键功能与技术说明</h2>
+          <dl class="engineering-key">
+            <div><dt>单项与连续泊车</dt><dd>倒车和侧方泊车各自包含入库、停车和出库，可作为单项执行。连续测试按任务顺序衔接两种流程，以覆盖两种模式间的动作交接。</dd></div>
+          </dl>
+        </section>
+      </div>
+      <!-- case-engineering:end -->
+    </article>
+    <nav class="case-section related-cases" aria-labelledby="related-title">
+      <h2 id="related-title">其他项目案例</h2>
+      <ul>
+        <li><a href="slope-driving-car.html">坡道行驶电动车</a></li>
+        <li><a href="mobile-aiming-device.html">简易自行瞄准装置</a></li>
+        <li><a href="agv-navigation.html">ROS2 AGV 多传感器融合导航</a></li>
+      </ul>
+    </nav>
+  </main>
+</body>
+</html>

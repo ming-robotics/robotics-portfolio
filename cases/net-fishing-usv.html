@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="丁彬的拉网捕鱼无人船案例，介绍差速推进、张力联锁与航段作业联调，系统已用于实际捕鱼作业。">
+  <meta name="theme-color" content="#f7f6f0">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="拉网捕鱼无人船｜丁彬">
+  <meta property="og:description" content="丁彬的拉网捕鱼无人船案例，介绍差速推进、张力联锁与航段作业联调，系统已用于实际捕鱼作业。">
+  <meta property="og:url" content="https://ming-robotics.github.io/robotics-portfolio/cases/net-fishing-usv.html">
+  <meta property="og:image" content="https://ming-robotics.github.io/robotics-portfolio/art/portfolio-social.png">
+  <meta property="og:image:alt" content="丁彬的机器人软件开发作品集">
+  <title>拉网捕鱼无人船｜丁彬</title>
+  <link rel="canonical" href="https://ming-robotics.github.io/robotics-portfolio/cases/net-fishing-usv.html">
+  <link rel="icon" type="image/svg+xml" href="../art/mark.svg">
+  <link rel="stylesheet" href="../assets/css/styles.css?v=portfolio-7">
+  <link rel="stylesheet" href="../assets/css/case.css?v=portfolio-7">
+</head>
+<body>
+  <a class="skip" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <div class="shell nav-wrap case-nav">
+      <a class="brand" href="../index.html" aria-label="丁彬，返回作品集首页">
+        <img src="../art/mark.svg" width="36" height="36" alt="">
+        <span>丁彬<small>DING BIN</small></span>
+      </a>
+      <a class="back-to-projects" href="../index.html#projects"><span aria-hidden="true">←</span> 项目案例</a>
+    </div>
+  </header>
+  <main class="shell case-page" id="main" tabindex="-1" aria-labelledby="case-name">
+    <article aria-labelledby="case-name">
+      <header class="case-intro">
+        <h1 id="case-name">拉网捕鱼无人船</h1>
+        <p>岸端留住网具一端，无人船牵引另一端按预设弧线布网，抵达接应点后由岸端收网。</p>
+        <ul class="tags" aria-label="项目技术栈">
+          <li class="tag">CAN</li><li class="tag">差速推进</li><li class="tag">张力联锁</li>
+        </ul>
+        <dl class="case-facts">
+          <div><dt>个人职责</dt><dd>负责无人船本体侧的差速推进，联调左右驱动器对 CAN 转速指令的响应，配合验证降速和停止动作。</dd></div>
+          <div><dt>系统验证</dt><dd>已用于实际捕鱼作业</dd></div>
+        </dl>
+      </header>
+      <!-- case-engineering:start -->
+      <div class="case-engineering">
+        <section class="engineering-section" aria-labelledby="engineering-w02-architecture">
+          <h2 id="engineering-w02-architecture">项目整体架构图</h2>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">岸船协作</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>岸端作业</strong><span>留住网具一端并在接应点收网</span></div>
+                <div class="engineering-connector"><span>布网任务</span></div>
+                <div class="engineering-node"><strong>船载工控机</strong><span>计算沿预设弧线的航段控制量</span></div>
+                <div class="engineering-connector"><span>左右转速指令</span></div>
+                <div class="engineering-node"><strong>双推进船体</strong><span>执行左右差速转速并牵引网具</span></div>
+              </div>
+            </div>
+            <div class="engineering-path">
+              <p class="engineering-path-label">牵引保护</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>牵引绳张力检测</strong><span>获取牵引负荷，监视张力升高</span></div>
+                <div class="engineering-connector"><span>张力状态</span></div>
+                <div class="engineering-node"><strong>任务降速与独立联锁</strong><span>上层下发降速指令，联锁作用于使能回路</span></div>
+                <div class="engineering-connector"><span>降速指令、联锁信号</span></div>
+                <div class="engineering-node"><strong>左右推进驱动器</strong><span>响应降速、停止及使能变化</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-w02-communication">
+          <h2 id="engineering-w02-communication">ROS1 节点通信关系图</h2>
+          <p class="engineering-note">图中按节点职责标注，并列出 actionlib 所承载的任务信号。</p>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">航段执行</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>作业任务客户端</strong><span>提交布网任务，读取航段进度</span></div>
+                <div class="engineering-connector"><span>Action 目标、反馈、取消</span></div>
+                <div class="engineering-node"><strong>拉网任务节点</strong><span>通过 actionlib 管理航段与取消</span></div>
+                <div class="engineering-connector"><span>左右转速指令</span></div>
+                <div class="engineering-node"><strong>船体 CAN 接口</strong><span>将差速命令发往左右推进驱动器</span></div>
+              </div>
+            </div>
+            <div class="engineering-path">
+              <p class="engineering-path-label">航段跟踪输入</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>GNSS 与 IMU 采集</strong><span>提供位置和惯性观测</span></div>
+                <div class="engineering-connector"><span>传感器观测</span></div>
+                <div class="engineering-node"><strong>船体定位与航向处理</strong><span>在工控机上融合观测</span></div>
+                <div class="engineering-connector"><span>位置、航向</span></div>
+                <div class="engineering-node"><strong>拉网任务节点</strong><span>使用船体状态跟踪弧线航段</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-w02-modules">
+          <h2 id="engineering-w02-modules">软件模块设计</h2>
+          <dl class="engineering-modules">
+            <div><dt>布网任务编排</dt><dd>组织按航段牵引至接应点的过程，反馈任务进度并处理取消。</dd></div>
+            <div><dt>航段跟踪与差速推进</dt><dd>融合 GNSS 与 IMU 数据，将航段控制要求转换为左右推进转速。</dd></div>
+            <div><dt>张力及失联保护</dt><dd>根据张力升高触发降速，岸端失联或航行越界时取消任务。</dd></div>
+            <div><dt>作业回放</dt><dd>把航迹、推进指令、张力曲线与船尾视频对应到同一作业段。</dd></div>
+          </dl>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-w02-interfaces">
+          <h2 id="engineering-w02-interfaces">硬件通信接口设计</h2>
+          <table class="engineering-interfaces">
+            <thead><tr><th scope="col">设备或端点</th><th scope="col">通信接口</th><th scope="col">信号或数据</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">船载工控机与左右推进驱动器</th><td>CAN / SocketCAN</td><td>左右差速转速指令</td></tr>
+              <tr><th scope="row">GNSS 与 IMU</th><td>定位与惯性数据输入</td><td>位置及惯性观测</td></tr>
+              <tr><th scope="row">牵引绳张力变送器</th><td>张力采集</td><td>用于监测牵引负荷的张力读数</td></tr>
+              <tr><th scope="row">独立张力联锁与推进驱动器</th><td>驱动使能回路</td><td>超限联锁信号</td></tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-w02-key">
+          <h2 id="engineering-w02-key">关键功能与技术说明</h2>
+          <dl class="engineering-key">
+            <div><dt>分层处理牵引异常</dt><dd>任务层根据张力调整推进转速，并处理失联和越界取消。驱动侧处理指令超时，独立张力联锁接入使能回路。</dd></div>
+            <div><dt>同步对照作业数据</dt><dd>在 rosbag 航迹上定位异常时段，再对照推进指令、张力曲线和船尾视频判断松绳、负载突升或疑似挂网。</dd></div>
+          </dl>
+        </section>
+      </div>
+      <!-- case-engineering:end -->
+    </article>
+    <nav class="case-section related-cases" aria-labelledby="related-title">
+      <h2 id="related-title">其他项目案例</h2>
+      <ul>
+        <li><a href="fishing-boat-control.html">海钓船用顶流机</a></li>
+        <li><a href="drain-inspection.html">排水管道检测机器人</a></li>
+        <li><a href="water-pipe-inspection.html">给水管道检测机器人</a></li>
+      </ul>
+    </nav>
+  </main>
+</body>
+</html>

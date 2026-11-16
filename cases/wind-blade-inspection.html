@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="丁彬的风电叶片检测机器人案例，介绍四轮驱动、多相机扫描、补光联动与影像质检。">
+  <meta name="theme-color" content="#f7f6f0">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="风电叶片检测机器人｜丁彬">
+  <meta property="og:description" content="丁彬的风电叶片检测机器人案例，介绍四轮驱动、多相机扫描、补光联动与影像质检。">
+  <meta property="og:url" content="https://ming-robotics.github.io/robotics-portfolio/cases/wind-blade-inspection.html">
+  <meta property="og:image" content="https://ming-robotics.github.io/robotics-portfolio/art/portfolio-social.png">
+  <meta property="og:image:alt" content="丁彬的机器人软件开发作品集">
+  <title>风电叶片检测机器人｜丁彬</title>
+  <link rel="canonical" href="https://ming-robotics.github.io/robotics-portfolio/cases/wind-blade-inspection.html">
+  <link rel="icon" type="image/svg+xml" href="../art/mark.svg">
+  <link rel="stylesheet" href="../assets/css/styles.css?v=portfolio-7">
+  <link rel="stylesheet" href="../assets/css/case.css?v=portfolio-7">
+</head>
+<body>
+  <a class="skip" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <div class="shell nav-wrap case-nav">
+      <a class="brand" href="../index.html" aria-label="丁彬，返回作品集首页">
+        <img src="../art/mark.svg" width="36" height="36" alt="">
+        <span>丁彬<small>DING BIN</small></span>
+      </a>
+      <a class="back-to-projects" href="../index.html#projects"><span aria-hidden="true">←</span> 项目案例</a>
+    </div>
+  </header>
+  <main class="shell case-page" id="main" tabindex="-1" aria-labelledby="case-name">
+    <article aria-labelledby="case-name">
+      <header class="case-intro">
+        <h1 id="case-name">风电叶片检测机器人</h1>
+        <p>围绕叶片表面巡检，联动机器人行走、拍摄视角和补光，记录已拍与待拍区间。</p>
+        <ul class="tags" aria-label="项目技术栈">
+          <li class="tag">四轮驱动</li><li class="tag">多相机</li><li class="tag">Modbus RTU</li>
+        </ul>
+        <dl class="case-facts">
+          <div><dt>个人职责</dt><dd>参与设备侧行走与拍摄动作的对接。</dd></div>
+          <div><dt>项目内容</dt><dd>四轮驱动、多相机扫描与补光配合</dd></div>
+        </dl>
+      </header>
+      <!-- case-engineering:start -->
+      <div class="case-engineering">
+        <section class="engineering-section" aria-labelledby="engineering-w05-architecture">
+          <h2 id="engineering-w05-architecture">项目整体架构图</h2>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">分段视觉扫描</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>巡检操作端</strong><span>选择叶片侧面及叶根至叶尖的扫描区间</span></div>
+                <div class="engineering-connector"><span>分段扫描任务</span></div>
+                <div class="engineering-node"><strong>巡检工控机</strong><span>协调行走速度、视角、相机采集与补光</span></div>
+                <div class="engineering-connector"><span>行走、云台和补光控制</span></div>
+                <div class="engineering-node"><strong>四轮扫描机器人</strong><span>移动并调整云台，采集多相机影像</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-w05-communication">
+          <h2 id="engineering-w05-communication">ROS2 节点通信关系图</h2>
+          <p class="engineering-note">本图表示方案中的功能节点和数据流，影像采集通过网络相机链路接入。</p>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">扫描控制</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>分段扫描任务节点</strong><span>按叶片侧面和展向区间编排扫描</span></div>
+                <div class="engineering-connector"><span>区间动作与档位</span></div>
+                <div class="engineering-node"><strong>设备接口模块</strong><span>对接驱动器、云台与调光模块</span></div>
+                <div class="engineering-connector"><span>设备控制量</span></div>
+                <div class="engineering-node"><strong>行走与拍摄设备</strong><span>执行行走、视角调整与补光设置</span></div>
+              </div>
+            </div>
+            <div class="engineering-path">
+              <p class="engineering-path-label">质检与补拍</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>多相机采集模块</strong><span>获取重叠视野的多路图像</span></div>
+                <div class="engineering-connector"><span>帧与拍摄位置信息</span></div>
+                <div class="engineering-node"><strong>图像归档与质检模块</strong><span>依据标定信息按区间关联照片</span></div>
+                <div class="engineering-connector"><span>覆盖记录与质量标记</span></div>
+                <div class="engineering-node"><strong>覆盖记录与补拍任务</strong><span>按已拍区间和质量问题安排复拍</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-w05-modules">
+          <h2 id="engineering-w05-modules">软件模块设计</h2>
+          <dl class="engineering-modules">
+            <div><dt>展向扫描编排</dt><dd>按叶片侧面与展向区间安排扫描速度、拍摄视角和补光档位。</dd></div>
+            <div><dt>本体执行与采图</dt><dd>协调四轮行走、云台、五路相机和七路补光。</dd></div>
+            <div><dt>影像归档与关联</dt><dd>通过标定信息关联重叠视野，以风机、叶片编号和区间检索照片。</dd></div>
+            <div><dt>表面缺陷与质量筛查</dt><dd>标记前缘侵蚀、涂层剥落及失焦、过曝、反光帧，形成补拍清单。</dd></div>
+          </dl>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-w05-interfaces">
+          <h2 id="engineering-w05-interfaces">硬件通信接口设计</h2>
+          <table class="engineering-interfaces">
+            <thead><tr><th scope="col">设备或端点</th><th scope="col">通信接口</th><th scope="col">信号或数据</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">四轮电机驱动器</th><td>Modbus RTU</td><td>行走控制指令</td></tr>
+              <tr><th scope="row">云台控制器</th><td>Modbus RTU</td><td>拍摄视角调整指令</td></tr>
+              <tr><th scope="row">五路网络相机与工控机</th><td>以太网图像采集</td><td>多相机影像</td></tr>
+              <tr><th scope="row">七路补光设备</th><td>多通道工业调光模块</td><td>补光控制档位</td></tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-w05-key">
+          <h2 id="engineering-w05-key">关键功能与技术说明</h2>
+          <dl class="engineering-key">
+            <div><dt>通过覆盖记录组织定点复拍</dt><dd>对照片按风机、叶片编号和展向区间归档，利用多相机标定关联重叠视野。根据覆盖记录和影像质检结果确定复拍区间、视角与曝光调整项。</dd></div>
+          </dl>
+        </section>
+      </div>
+      <!-- case-engineering:end -->
+    </article>
+    <nav class="case-section related-cases" aria-labelledby="related-title">
+      <h2 id="related-title">其他项目案例</h2>
+      <ul>
+        <li><a href="drain-inspection.html">排水管道检测机器人</a></li>
+        <li><a href="water-pipe-inspection.html">给水管道检测机器人</a></li>
+        <li><a href="suspended-platform-monitoring.html">电动吊篮运行监测</a></li>
+      </ul>
+    </nav>
+  </main>
+</body>
+</html>

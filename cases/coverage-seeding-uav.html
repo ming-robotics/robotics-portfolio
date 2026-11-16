@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="丁彬独立完成的植保飞行器全覆盖飞播系统，在 28 个格区联调覆盖航线与模拟播撒。">
+  <meta name="theme-color" content="#f7f6f0">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="植保飞行器全覆盖飞播系统｜丁彬">
+  <meta property="og:description" content="丁彬独立完成的植保飞行器全覆盖飞播系统，在 28 个格区联调覆盖航线与模拟播撒。">
+  <meta property="og:url" content="https://ming-robotics.github.io/robotics-portfolio/cases/coverage-seeding-uav.html">
+  <meta property="og:image" content="https://ming-robotics.github.io/robotics-portfolio/art/portfolio-social.png">
+  <meta property="og:image:alt" content="丁彬的机器人软件开发作品集">
+  <title>植保飞行器全覆盖飞播系统｜丁彬</title>
+  <link rel="canonical" href="https://ming-robotics.github.io/robotics-portfolio/cases/coverage-seeding-uav.html">
+  <link rel="icon" type="image/svg+xml" href="../art/mark.svg">
+  <link rel="stylesheet" href="../assets/css/styles.css?v=portfolio-7">
+  <link rel="stylesheet" href="../assets/css/case.css?v=portfolio-7">
+</head>
+<body>
+  <a class="skip" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <div class="shell nav-wrap case-nav">
+      <a class="brand" href="../index.html" aria-label="丁彬，返回作品集首页">
+        <img src="../art/mark.svg" width="36" height="36" alt="">
+        <span>丁彬<small>DING BIN</small></span>
+      </a>
+      <a class="back-to-projects" href="../index.html#projects"><span aria-hidden="true">←</span> 项目案例</a>
+    </div>
+  </header>
+  <main class="shell case-page" id="main" tabindex="-1" aria-labelledby="case-name">
+    <article aria-labelledby="case-name">
+      <header class="case-intro">
+        <h1 id="case-name">植保飞行器全覆盖飞播系统</h1>
+        <p>在模拟田块中规划植保航线，让飞行器覆盖所有待播撒格区，并在飞越其他格区时关闭播撒。</p>
+        <ul class="tags" aria-label="项目技术栈">
+          <li class="tag">四旋翼</li><li class="tag">覆盖航线</li><li class="tag">播撒控制</li>
+        </ul>
+        <dl class="case-facts">
+          <div><dt>个人职责</dt><dd>校园独立开发</dd></div>
+          <div><dt>验证情况</dt><dd>模拟田块联调</dd></div>
+        </dl>
+      </header>
+      <!-- case-engineering:start -->
+      <div class="case-engineering">
+        <section class="engineering-section" aria-labelledby="engineering-s04-architecture">
+          <h2 id="engineering-s04-architecture">项目整体架构图</h2>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">作业规划与执行</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>模拟田块</strong><span>划分 28 个编号格区，标记待播撒区</span></div>
+                <div class="engineering-connector"><span>格区与作业要求</span></div>
+                <div class="engineering-node"><strong>覆盖航线规划</strong><span>为待播撒格区安排飞行航线</span></div>
+                <div class="engineering-connector"><span>覆盖航线</span></div>
+                <div class="engineering-node"><strong>四旋翼与模拟播撒</strong><span>执行航线，按格区联动播撒</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s04-communication">
+          <h2 id="engineering-s04-communication">飞行任务与播撒控制关系图</h2>
+          <p class="engineering-note">飞行位置用于判断当前格区，模拟播撒模块按格区类型接收开关动作。</p>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">格区切换</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>飞行任务</strong><span>沿规划航线执行</span></div>
+                <div class="engineering-connector"><span>经过位置</span></div>
+                <div class="engineering-node"><strong>格区判断</strong><span>区分待播撒区和非播撒区</span></div>
+                <div class="engineering-connector"><span>开关动作</span></div>
+                <div class="engineering-node"><strong>模拟播撒模块</strong><span>按格区类型启用或关闭</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s04-modules">
+          <h2 id="engineering-s04-modules">软件模块设计</h2>
+          <dl class="engineering-modules">
+            <div><dt>格区配置</dt><dd>记录格区编号和是否需要播撒，供航线规划与控制判断使用。</dd></div>
+            <div><dt>覆盖航线规划</dt><dd>根据待播撒格区安排航线，使飞行任务覆盖指定区域。</dd></div>
+            <div><dt>飞行任务执行</dt><dd>驱动四旋翼沿航线飞行，将经过区域与播撒动作联动。</dd></div>
+            <div><dt>播撒联动</dt><dd>在待播撒区触发模拟播撒，经过非播撒区时关闭。</dd></div>
+          </dl>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s04-interfaces">
+          <h2 id="engineering-s04-interfaces">硬件通信接口设计</h2>
+          <table class="engineering-interfaces">
+            <thead><tr><th scope="col">设备或端点</th><th scope="col">通信接口</th><th scope="col">信号或数据</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">航线任务 → 四旋翼平台</th><td>航线输入</td><td>待执行的覆盖航线</td></tr>
+              <tr><th scope="row">飞行执行 → 格区判断</th><td>飞行位置输入</td><td>用于区分当前经过的格区</td></tr>
+              <tr><th scope="row">任务控制 → 模拟播撒模块</th><td>开关控制输出</td><td>启用或关闭模拟播撒</td></tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s04-key">
+          <h2 id="engineering-s04-key">关键功能与技术说明</h2>
+          <dl class="engineering-key">
+            <div><dt>将覆盖飞行与播撒分开检查</dt><dd>指定格区都应有覆盖动作，同时核对各格区的模拟播撒结果。待播撒区检查漏撒和重复播撒，非播撒区检查是否误撒。</dd></div>
+          </dl>
+        </section>
+      </div>
+      <!-- case-engineering:end -->
+    </article>
+    <nav class="case-section related-cases" aria-labelledby="related-title">
+      <h2 id="related-title">其他项目案例</h2>
+      <ul>
+        <li><a href="ros1-uav.html">ROS1 自主导航无人机</a></li>
+        <li><a href="air-ground-firefighting.html">空地协同智能消防系统</a></li>
+        <li><a href="delivery-uav.html">送货无人机</a></li>
+      </ul>
+    </nav>
+  </main>
+</body>
+</html>

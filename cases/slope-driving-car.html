@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="丁彬独立完成的坡道行驶电动车，使用 TI 微控制器联调平地与坡道循迹及指定区域停车。">
+  <meta name="theme-color" content="#f7f6f0">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="坡道行驶电动车｜丁彬">
+  <meta property="og:description" content="丁彬独立完成的坡道行驶电动车，使用 TI 微控制器联调平地与坡道循迹及指定区域停车。">
+  <meta property="og:url" content="https://ming-robotics.github.io/robotics-portfolio/cases/slope-driving-car.html">
+  <meta property="og:image" content="https://ming-robotics.github.io/robotics-portfolio/art/portfolio-social.png">
+  <meta property="og:image:alt" content="丁彬的机器人软件开发作品集">
+  <title>坡道行驶电动车｜丁彬</title>
+  <link rel="canonical" href="https://ming-robotics.github.io/robotics-portfolio/cases/slope-driving-car.html">
+  <link rel="icon" type="image/svg+xml" href="../art/mark.svg">
+  <link rel="stylesheet" href="../assets/css/styles.css?v=portfolio-7">
+  <link rel="stylesheet" href="../assets/css/case.css?v=portfolio-7">
+</head>
+<body>
+  <a class="skip" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <div class="shell nav-wrap case-nav">
+      <a class="brand" href="../index.html" aria-label="丁彬，返回作品集首页">
+        <img src="../art/mark.svg" width="36" height="36" alt="">
+        <span>丁彬<small>DING BIN</small></span>
+      </a>
+      <a class="back-to-projects" href="../index.html#projects"><span aria-hidden="true">←</span> 项目案例</a>
+    </div>
+  </header>
+  <main class="shell case-page" id="main" tabindex="-1" aria-labelledby="case-name">
+    <article aria-labelledby="case-name">
+      <header class="case-intro">
+        <h1 id="case-name">坡道行驶电动车</h1>
+        <p>以车载传感器、控制器和电池供电模块搭建自主行驶小车，在平地及坡道上沿标记线行驶。</p>
+        <ul class="tags" aria-label="项目技术栈">
+          <li class="tag">TI 微控制器</li><li class="tag">标记线循迹</li><li class="tag">运动控制</li>
+        </ul>
+        <dl class="case-facts">
+          <div><dt>个人职责</dt><dd>校园独立开发</dd></div>
+          <div><dt>验证情况</dt><dd>平地与坡道实车测试</dd></div>
+        </dl>
+      </header>
+      <!-- case-engineering:start -->
+      <div class="case-engineering">
+        <section class="engineering-section" aria-labelledby="engineering-s09-architecture">
+          <h2 id="engineering-s09-architecture">项目整体架构图</h2>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">小车感知与运动</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>车载传感器</strong><span>读取平地和坡道上的标记线</span></div>
+                <div class="engineering-connector"><span>标记线反馈</span></div>
+                <div class="engineering-node"><strong>TI 微控制器</strong><span>运行循迹与停靠逻辑</span></div>
+                <div class="engineering-connector"><span>运动控制</span></div>
+                <div class="engineering-node"><strong>电动车底盘</strong><span>调整行驶方向并执行停车</span></div>
+              </div>
+            </div>
+            <div class="engineering-path">
+              <p class="engineering-path-label">供电关系</p>
+              <div class="engineering-flow" style="--edge-count: 1">
+                <div class="engineering-node"><strong>车载电池</strong><span>为自主行驶提供电源</span></div>
+                <div class="engineering-connector"><span>车载供电</span></div>
+                <div class="engineering-node"><strong>控制与执行系统</strong><span>运行车载感知和底盘控制</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s09-communication">
+          <h2 id="engineering-s09-communication">循迹与停靠控制关系图</h2>
+          <p class="engineering-note">通过标记线反馈维持循迹，进入指定区域后切换到停车动作。</p>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">行驶与停车判断</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>标记线传感器</strong><span>反馈当前循迹情况</span></div>
+                <div class="engineering-connector"><span>循迹反馈</span></div>
+                <div class="engineering-node"><strong>循迹与停靠逻辑</strong><span>选择继续循迹或停车</span></div>
+                <div class="engineering-connector"><span>动作输出</span></div>
+                <div class="engineering-node"><strong>底盘执行</strong><span>调整行驶方向或停止</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s09-modules">
+          <h2 id="engineering-s09-modules">软件模块设计</h2>
+          <dl class="engineering-modules">
+            <div><dt>标记线感知</dt><dd>由车载传感器提供地面标记线反馈。</dd></div>
+            <div><dt>循迹控制</dt><dd>根据标记线反馈调整行驶方向，覆盖平地和坡道场景。</dd></div>
+            <div><dt>停靠控制</dt><dd>小车驶入指定停靠区域后执行停车。</dd></div>
+          </dl>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s09-interfaces">
+          <h2 id="engineering-s09-interfaces">硬件通信接口设计</h2>
+          <table class="engineering-interfaces">
+            <thead><tr><th scope="col">设备或端点</th><th scope="col">通信接口</th><th scope="col">信号或数据</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">车载传感器 → TI 微控制器</th><td>传感器反馈输入</td><td>地面标记线反馈</td></tr>
+              <tr><th scope="row">TI 微控制器 → 底盘驱动</th><td>运动控制输出</td><td>行驶方向调整和停车</td></tr>
+              <tr><th scope="row">车载电池 → 小车系统</th><td>电源连接</td><td>控制与执行系统供电</td></tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s09-key">
+          <h2 id="engineering-s09-key">关键功能与技术说明</h2>
+          <dl class="engineering-key">
+            <div><dt>循迹到停车的动作切换</dt><dd>行驶时控制器持续根据线路反馈调整方向。进入停靠区域后执行停车，在平地和坡道场景中分别检验循迹与停靠效果。</dd></div>
+          </dl>
+        </section>
+      </div>
+      <!-- case-engineering:end -->
+    </article>
+    <nav class="case-section related-cases" aria-labelledby="related-title">
+      <h2 id="related-title">其他项目案例</h2>
+      <ul>
+        <li><a href="autonomous-parking-car.html">自动泊车电动车</a></li>
+        <li><a href="mobile-aiming-device.html">简易自行瞄准装置</a></li>
+        <li><a href="agv-navigation.html">ROS2 AGV 多传感器融合导航</a></li>
+      </ul>
+    </nav>
+  </main>
+</body>
+</html>

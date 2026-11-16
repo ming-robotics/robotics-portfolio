@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="丁彬独立完成的简易自行瞄准装置，联调自动寻迹底盘与双轴云台，在行驶中测试激光指向。">
+  <meta name="theme-color" content="#f7f6f0">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="简易自行瞄准装置｜丁彬">
+  <meta property="og:description" content="丁彬独立完成的简易自行瞄准装置，联调自动寻迹底盘与双轴云台，在行驶中测试激光指向。">
+  <meta property="og:url" content="https://ming-robotics.github.io/robotics-portfolio/cases/mobile-aiming-device.html">
+  <meta property="og:image" content="https://ming-robotics.github.io/robotics-portfolio/art/portfolio-social.png">
+  <meta property="og:image:alt" content="丁彬的机器人软件开发作品集">
+  <title>简易自行瞄准装置｜丁彬</title>
+  <link rel="canonical" href="https://ming-robotics.github.io/robotics-portfolio/cases/mobile-aiming-device.html">
+  <link rel="icon" type="image/svg+xml" href="../art/mark.svg">
+  <link rel="stylesheet" href="../assets/css/styles.css?v=portfolio-7">
+  <link rel="stylesheet" href="../assets/css/case.css?v=portfolio-7">
+</head>
+<body>
+  <a class="skip" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <div class="shell nav-wrap case-nav">
+      <a class="brand" href="../index.html" aria-label="丁彬，返回作品集首页">
+        <img src="../art/mark.svg" width="36" height="36" alt="">
+        <span>丁彬<small>DING BIN</small></span>
+      </a>
+      <a class="back-to-projects" href="../index.html#projects"><span aria-hidden="true">←</span> 项目案例</a>
+    </div>
+  </header>
+  <main class="shell case-page" id="main" tabindex="-1" aria-labelledby="case-name">
+    <article aria-labelledby="case-name">
+      <header class="case-intro">
+        <h1 id="case-name">简易自行瞄准装置</h1>
+        <p>让小车沿地面标记路线行驶，同时通过云台调整激光指向，使光斑投射到目标靶面。</p>
+        <ul class="tags" aria-label="项目技术栈">
+          <li class="tag">自动寻迹</li><li class="tag">双轴云台</li><li class="tag">激光指向</li>
+        </ul>
+        <dl class="case-facts">
+          <div><dt>个人职责</dt><dd>校园独立开发</dd></div>
+          <div><dt>验证情况</dt><dd>行驶中瞄准测试</dd></div>
+        </dl>
+      </header>
+      <!-- case-engineering:start -->
+      <div class="case-engineering">
+        <section class="engineering-section" aria-labelledby="engineering-s07-architecture">
+          <h2 id="engineering-s07-architecture">项目整体架构图</h2>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">机电演示构成</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>标记路线</strong><span>为小车提供循迹参考</span></div>
+                <div class="engineering-connector"><span>地面标记</span></div>
+                <div class="engineering-node"><strong>自动寻迹底盘</strong><span>载着云台沿标记线路行驶</span></div>
+                <div class="engineering-connector"><span>移动载体</span></div>
+                <div class="engineering-node"><strong>双轴云台与光学演示模块</strong><span>用于观察移动过程中的协同表现</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s07-communication">
+          <h2 id="engineering-s07-communication">底盘与云台的控制关系图</h2>
+          <p class="engineering-note">联调整合了循迹底盘和云台演示两部分，路径一关注车辆行驶，路径二关注机电动作。</p>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">循迹控制</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>寻迹输入</strong><span>反映车辆与标记线的位置关系</span></div>
+                <div class="engineering-connector"><span>循迹反馈</span></div>
+                <div class="engineering-node"><strong>底盘控制</strong><span>依据标记反馈组织行驶</span></div>
+                <div class="engineering-connector"><span>行驶动作</span></div>
+                <div class="engineering-node"><strong>小车底盘</strong><span>执行沿线移动</span></div>
+              </div>
+            </div>
+            <div class="engineering-path">
+              <p class="engineering-path-label">云台演示</p>
+              <div class="engineering-flow" style="--edge-count: 1">
+                <div class="engineering-node"><strong>演示控制</strong><span>组织云台动作测试</span></div>
+                <div class="engineering-connector"><span>云台动作</span></div>
+                <div class="engineering-node"><strong>双轴云台</strong><span>承载光学演示模块</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s07-modules">
+          <h2 id="engineering-s07-modules">软件模块设计</h2>
+          <dl class="engineering-modules">
+            <div><dt>寻迹输入</dt><dd>将地面标记作为底盘运动的观察输入。</dd></div>
+            <div><dt>底盘行驶</dt><dd>由小车底盘执行沿标记路线的移动。</dd></div>
+            <div><dt>云台联调</dt><dd>将双轴云台装入移动平台，观察行驶与云台动作能否配合。</dd></div>
+          </dl>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s07-interfaces">
+          <h2 id="engineering-s07-interfaces">硬件通信接口设计</h2>
+          <table class="engineering-interfaces">
+            <thead><tr><th scope="col">设备或端点</th><th scope="col">通信接口</th><th scope="col">信号或数据</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">寻迹输入 → 底盘控制</th><td>循迹反馈输入</td><td>标记线反馈</td></tr>
+              <tr><th scope="row">底盘控制 → 小车底盘</th><td>运动控制输出</td><td>底盘行驶动作</td></tr>
+              <tr><th scope="row">演示控制 → 双轴云台</th><td>云台动作输出</td><td>机电演示动作</td></tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s07-key">
+          <h2 id="engineering-s07-key">关键功能与技术说明</h2>
+          <dl class="engineering-key">
+            <div><dt>移动平台上的机电联调</dt><dd>将底盘循迹与云台演示放在同一次联调中，观察小车沿线行驶时云台的动作表现。</dd></div>
+          </dl>
+        </section>
+      </div>
+      <!-- case-engineering:end -->
+    </article>
+    <nav class="case-section related-cases" aria-labelledby="related-title">
+      <h2 id="related-title">其他项目案例</h2>
+      <ul>
+        <li><a href="autonomous-parking-car.html">自动泊车电动车</a></li>
+        <li><a href="slope-driving-car.html">坡道行驶电动车</a></li>
+        <li><a href="medical-delivery-robot.html">ROS2 智能送药小车</a></li>
+      </ul>
+    </nav>
+  </main>
+</body>
+</html>

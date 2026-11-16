@@ -3,10 +3,21 @@ const path = require("node:path");
 const { renderCaseEngineering } = require("../assets/js/case-engineering.js");
 
 const staticCases = {
-  W03: "drain-inspection.html",
   W01: "fishing-boat-control.html",
+  W02: "net-fishing-usv.html",
+  W03: "drain-inspection.html",
+  W04: "water-pipe-inspection.html",
+  W05: "wind-blade-inspection.html",
+  W06: "suspended-platform-monitoring.html",
   S01: "ros1-uav.html",
-  S02: "agv-navigation.html"
+  S02: "agv-navigation.html",
+  S03: "medical-delivery-robot.html",
+  S04: "coverage-seeding-uav.html",
+  S05: "air-ground-firefighting.html",
+  S06: "delivery-uav.html",
+  S07: "mobile-aiming-device.html",
+  S08: "autonomous-parking-car.html",
+  S09: "slope-driving-car.html"
 };
 const start = "      <!-- case-engineering:start -->";
 const end = "      <!-- case-engineering:end -->";

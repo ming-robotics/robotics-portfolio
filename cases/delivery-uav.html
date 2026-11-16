@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="丁彬独立完成的送货无人机，串联定点悬停、升降吊舱收放和恢复巡航，完成指定地点交付。">
+  <meta name="theme-color" content="#f7f6f0">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="送货无人机｜丁彬">
+  <meta property="og:description" content="丁彬独立完成的送货无人机，串联定点悬停、升降吊舱收放和恢复巡航，完成指定地点交付。">
+  <meta property="og:url" content="https://ming-robotics.github.io/robotics-portfolio/cases/delivery-uav.html">
+  <meta property="og:image" content="https://ming-robotics.github.io/robotics-portfolio/art/portfolio-social.png">
+  <meta property="og:image:alt" content="丁彬的机器人软件开发作品集">
+  <title>送货无人机｜丁彬</title>
+  <link rel="canonical" href="https://ming-robotics.github.io/robotics-portfolio/cases/delivery-uav.html">
+  <link rel="icon" type="image/svg+xml" href="../art/mark.svg">
+  <link rel="stylesheet" href="../assets/css/styles.css?v=portfolio-7">
+  <link rel="stylesheet" href="../assets/css/case.css?v=portfolio-7">
+</head>
+<body>
+  <a class="skip" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <div class="shell nav-wrap case-nav">
+      <a class="brand" href="../index.html" aria-label="丁彬，返回作品集首页">
+        <img src="../art/mark.svg" width="36" height="36" alt="">
+        <span>丁彬<small>DING BIN</small></span>
+      </a>
+      <a class="back-to-projects" href="../index.html#projects"><span aria-hidden="true">←</span> 项目案例</a>
+    </div>
+  </header>
+  <main class="shell case-page" id="main" tabindex="-1" aria-labelledby="case-name">
+    <article aria-labelledby="case-name">
+      <header class="case-intro">
+        <h1 id="case-name">送货无人机</h1>
+        <p>设计多旋翼无人机送货流程，通过可升降吊舱在悬停时下放货物。</p>
+        <ul class="tags" aria-label="项目技术栈">
+          <li class="tag">多旋翼</li><li class="tag">升降吊舱</li><li class="tag">定点悬停</li>
+        </ul>
+        <dl class="case-facts">
+          <div><dt>个人职责</dt><dd>校园独立开发</dd></div>
+          <div><dt>验证情况</dt><dd>指定地点送货测试</dd></div>
+        </dl>
+      </header>
+      <!-- case-engineering:start -->
+      <div class="case-engineering">
+        <section class="engineering-section" aria-labelledby="engineering-s06-architecture">
+          <h2 id="engineering-s06-architecture">项目整体架构图</h2>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">飞行与投送流程</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>多旋翼飞行平台</strong><span>按任务飞抵指定位置</span></div>
+                <div class="engineering-connector"><span>抵达与悬停阶段</span></div>
+                <div class="engineering-node"><strong>投送任务控制</strong><span>协调悬停、吊舱动作和交付提示</span></div>
+                <div class="engineering-connector"><span>收放动作</span></div>
+                <div class="engineering-node"><strong>升降吊舱</strong><span>悬停时下放，交付后收回</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s06-communication">
+          <h2 id="engineering-s06-communication">飞行与吊舱控制关系图</h2>
+          <p class="engineering-note">图中以任务阶段表示飞行平台与吊舱的联动顺序。</p>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">目标点交付</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>飞行控制</strong><span>抵达目标点后下降并悬停</span></div>
+                <div class="engineering-connector"><span>进入悬停阶段</span></div>
+                <div class="engineering-node"><strong>交付控制</strong><span>下放吊舱并播放语音提示</span></div>
+                <div class="engineering-connector"><span>完成吊舱回收</span></div>
+                <div class="engineering-node"><strong>恢复巡航</strong><span>收回吊舱后恢复巡航高度</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s06-modules">
+          <h2 id="engineering-s06-modules">软件模块设计</h2>
+          <dl class="engineering-modules">
+            <div><dt>飞行任务</dt><dd>执行起飞、巡航、目标点下降悬停和恢复巡航。</dd></div>
+            <div><dt>升降吊舱</dt><dd>根据投送流程执行机腹收起、悬停下放和投送后回收。</dd></div>
+            <div><dt>交付提示</dt><dd>在货物交付过程中通过扬声器播放语音提示。</dd></div>
+            <div><dt>任务编排</dt><dd>按顺序衔接飞行状态和吊舱动作。</dd></div>
+          </dl>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s06-interfaces">
+          <h2 id="engineering-s06-interfaces">硬件通信接口设计</h2>
+          <table class="engineering-interfaces">
+            <thead><tr><th scope="col">设备或端点</th><th scope="col">通信接口</th><th scope="col">信号或数据</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">任务控制 → 多旋翼平台</th><td>飞行动作输入</td><td>巡航、下降悬停和恢复巡航</td></tr>
+              <tr><th scope="row">交付控制 → 吊舱机构</th><td>升降控制输出</td><td>下放或收回动作</td></tr>
+              <tr><th scope="row">交付控制 → 扬声器</th><td>语音提示输出</td><td>投送过程的提示音</td></tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s06-key">
+          <h2 id="engineering-s06-key">关键功能与技术说明</h2>
+          <dl class="engineering-key">
+            <div><dt>吊舱动作随任务阶段切换</dt><dd>起飞和巡航时吊舱贴近机腹。抵达目标点后先调整飞行高度并悬停，再下放吊舱。交付后先收回吊舱，再恢复巡航高度。</dd></div>
+          </dl>
+        </section>
+      </div>
+      <!-- case-engineering:end -->
+    </article>
+    <nav class="case-section related-cases" aria-labelledby="related-title">
+      <h2 id="related-title">其他项目案例</h2>
+      <ul>
+        <li><a href="ros1-uav.html">ROS1 自主导航无人机</a></li>
+        <li><a href="coverage-seeding-uav.html">植保飞行器全覆盖飞播系统</a></li>
+        <li><a href="medical-delivery-robot.html">ROS2 智能送药小车</a></li>
+      </ul>
+    </nav>
+  </main>
+</body>
+</html>

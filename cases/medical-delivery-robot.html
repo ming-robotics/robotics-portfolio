@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="丁彬独立完成的 ROS2 智能送药小车，使用 OpenCV 与 OCR 识别病房号，验证出发、到站、卸药和返程。">
+  <meta name="theme-color" content="#f7f6f0">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="ROS2 智能送药小车｜丁彬">
+  <meta property="og:description" content="丁彬独立完成的 ROS2 智能送药小车，使用 OpenCV 与 OCR 识别病房号，验证出发、到站、卸药和返程。">
+  <meta property="og:url" content="https://ming-robotics.github.io/robotics-portfolio/cases/medical-delivery-robot.html">
+  <meta property="og:image" content="https://ming-robotics.github.io/robotics-portfolio/art/portfolio-social.png">
+  <meta property="og:image:alt" content="丁彬的机器人软件开发作品集">
+  <title>ROS2 智能送药小车｜丁彬</title>
+  <link rel="canonical" href="https://ming-robotics.github.io/robotics-portfolio/cases/medical-delivery-robot.html">
+  <link rel="icon" type="image/svg+xml" href="../art/mark.svg">
+  <link rel="stylesheet" href="../assets/css/styles.css?v=portfolio-7">
+  <link rel="stylesheet" href="../assets/css/case.css?v=portfolio-7">
+</head>
+<body>
+  <a class="skip" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <div class="shell nav-wrap case-nav">
+      <a class="brand" href="../index.html" aria-label="丁彬，返回作品集首页">
+        <img src="../art/mark.svg" width="36" height="36" alt="">
+        <span>丁彬<small>DING BIN</small></span>
+      </a>
+      <a class="back-to-projects" href="../index.html#projects"><span aria-hidden="true">←</span> 项目案例</a>
+    </div>
+  </header>
+  <main class="shell case-page" id="main" tabindex="-1" aria-labelledby="case-name">
+    <article aria-labelledby="case-name">
+      <header class="case-intro">
+        <h1 id="case-name">ROS2 智能送药小车</h1>
+        <p>在模拟医院走廊中，识别纸面病房号，完成目标病房的药盒配送。</p>
+        <ul class="tags" aria-label="项目技术栈">
+          <li class="tag">ROS2 Humble</li><li class="tag">OpenCV</li><li class="tag">OCR</li>
+        </ul>
+        <dl class="case-facts">
+          <div><dt>个人职责</dt><dd>校园独立开发</dd></div>
+          <div><dt>验证情况</dt><dd>模拟医院全流程验证</dd></div>
+        </dl>
+      </header>
+      <!-- case-engineering:start -->
+      <div class="case-engineering">
+        <section class="engineering-section" aria-labelledby="engineering-s03-architecture">
+          <h2 id="engineering-s03-architecture">项目整体架构图</h2>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">目的地识别与配送</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>病房号图像</strong><span>读取纸面数字标号</span></div>
+                <div class="engineering-connector"><span>病房目标</span></div>
+                <div class="engineering-node"><strong>ROS2 任务控制</strong><span>接收视觉识别结果，组织配送流程</span></div>
+                <div class="engineering-connector"><span>行驶指令</span></div>
+                <div class="engineering-node"><strong>移动底盘</strong><span>沿走廊标识寻径、到站并返程</span></div>
+              </div>
+            </div>
+            <div class="engineering-path">
+              <p class="engineering-path-label">装卸执行</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>载荷检测</strong><span>提供装载和卸载状态</span></div>
+                <div class="engineering-connector"><span>载荷状态</span></div>
+                <div class="engineering-node"><strong>ROS2 任务控制</strong><span>根据载荷状态与到站事件推进任务</span></div>
+                <div class="engineering-connector"><span>卸药与灯控</span></div>
+                <div class="engineering-node"><strong>推杆与红色指示灯</strong><span>卸药并显示当前任务状态</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s03-communication">
+          <h2 id="engineering-s03-communication">ROS2 节点通信关系图</h2>
+          <p class="engineering-note">图中以功能命名软件模块，连线分别表示房号、装卸状态以及任务控制信号。</p>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">图像处理到任务目标</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>OpenCV 图像处理</strong><span>处理纸质病房数字标号</span></div>
+                <div class="engineering-connector"><span>处理后的图像</span></div>
+                <div class="engineering-node"><strong>OCR 识别</strong><span>提取病房号码</span></div>
+                <div class="engineering-connector"><span>病房号</span></div>
+                <div class="engineering-node"><strong>配送任务控制</strong><span>将病房号作为任务目标</span></div>
+              </div>
+            </div>
+            <div class="engineering-path">
+              <p class="engineering-path-label">装载确认与行驶</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>载荷检测</strong><span>报告装载或卸载完成</span></div>
+                <div class="engineering-connector"><span>装卸完成状态</span></div>
+                <div class="engineering-node"><strong>配送任务控制</strong><span>依据载荷状态发起出发或返程</span></div>
+                <div class="engineering-connector"><span>出发或返程指令</span></div>
+                <div class="engineering-node"><strong>走廊寻径与底盘</strong><span>依据标识行驶并判断到站</span></div>
+              </div>
+            </div>
+            <div class="engineering-path">
+              <p class="engineering-path-label">到站与卸药</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>到站判断</strong><span>识别小车抵达目标病房</span></div>
+                <div class="engineering-connector"><span>到站事件</span></div>
+                <div class="engineering-node"><strong>配送任务控制</strong><span>触发到站提示与卸药</span></div>
+                <div class="engineering-connector"><span>推杆与指示灯控制</span></div>
+                <div class="engineering-node"><strong>执行与提示模块</strong><span>由推杆推出药盒，卸载确认后熄灯</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s03-modules">
+          <h2 id="engineering-s03-modules">软件模块设计</h2>
+          <dl class="engineering-modules">
+            <div><dt>目标识别</dt><dd>用 OpenCV 处理病房标号图像，再通过 OCR 读取病房号码。</dd></div>
+            <div><dt>走廊寻径</dt><dd>结合走廊标识控制行驶并判断是否到站。</dd></div>
+            <div><dt>载荷检测</dt><dd>向任务控制提供装载就绪和卸载完成的判断。</dd></div>
+            <div><dt>任务流程</dt><dd>在 ROS2 Humble 中组织出发、到站、卸药和返程。</dd></div>
+            <div><dt>执行与提示</dt><dd>到站后控制推杆卸药，检测到卸载完成后熄灭红色指示灯。</dd></div>
+          </dl>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s03-interfaces">
+          <h2 id="engineering-s03-interfaces">硬件通信接口设计</h2>
+          <table class="engineering-interfaces">
+            <thead><tr><th scope="col">设备或端点</th><th scope="col">通信接口</th><th scope="col">信号或数据</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">图像输入 → 软件识别</th><td>图像采集接口</td><td>病房数字标号图像</td></tr>
+              <tr><th scope="row">载荷检测 → 任务控制</th><td>状态输入</td><td>装载就绪、卸载完成</td></tr>
+              <tr><th scope="row">任务控制 → 移动底盘</th><td>运动控制接口</td><td>配送与返程的行驶指令</td></tr>
+              <tr><th scope="row">任务控制 → 推杆</th><td>执行控制输出</td><td>卸药动作</td></tr>
+              <tr><th scope="row">任务控制 → 红色指示灯</th><td>灯控输出</td><td>卸载完成后熄灯</td></tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-s03-key">
+          <h2 id="engineering-s03-key">关键功能与技术说明</h2>
+          <dl class="engineering-key">
+            <div><dt>从识别结果到配送目标</dt><dd>OpenCV 处理纸质标号图像，OCR 读取病房号后交给任务控制。行驶阶段通过走廊标识寻径并判断到站。</dd></div>
+            <div><dt>装卸确认驱动任务切换</dt><dd>装载完成后出发，到站后由推杆推出药盒。小车检测到卸载完成后熄灭红色指示灯，再返回药房。</dd></div>
+          </dl>
+        </section>
+      </div>
+      <!-- case-engineering:end -->
+    </article>
+    <nav class="case-section related-cases" aria-labelledby="related-title">
+      <h2 id="related-title">其他项目案例</h2>
+      <ul>
+        <li><a href="agv-navigation.html">ROS2 AGV 多传感器融合导航</a></li>
+        <li><a href="autonomous-parking-car.html">自动泊车电动车</a></li>
+        <li><a href="ros1-uav.html">ROS1 自主导航无人机</a></li>
+      </ul>
+    </nav>
+  </main>
+</body>
+</html>

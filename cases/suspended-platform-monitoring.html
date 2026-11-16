@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="丁彬的电动吊篮运行监测案例，介绍 Modbus RTU 只读采集、本地安全联锁与事件班报。">
+  <meta name="theme-color" content="#f7f6f0">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="电动吊篮运行监测｜丁彬">
+  <meta property="og:description" content="丁彬的电动吊篮运行监测案例，介绍 Modbus RTU 只读采集、本地安全联锁与事件班报。">
+  <meta property="og:url" content="https://ming-robotics.github.io/robotics-portfolio/cases/suspended-platform-monitoring.html">
+  <meta property="og:image" content="https://ming-robotics.github.io/robotics-portfolio/art/portfolio-social.png">
+  <meta property="og:image:alt" content="丁彬的机器人软件开发作品集">
+  <title>电动吊篮运行监测｜丁彬</title>
+  <link rel="canonical" href="https://ming-robotics.github.io/robotics-portfolio/cases/suspended-platform-monitoring.html">
+  <link rel="icon" type="image/svg+xml" href="../art/mark.svg">
+  <link rel="stylesheet" href="../assets/css/styles.css?v=portfolio-7">
+  <link rel="stylesheet" href="../assets/css/case.css?v=portfolio-7">
+</head>
+<body>
+  <a class="skip" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <div class="shell nav-wrap case-nav">
+      <a class="brand" href="../index.html" aria-label="丁彬，返回作品集首页">
+        <img src="../art/mark.svg" width="36" height="36" alt="">
+        <span>丁彬<small>DING BIN</small></span>
+      </a>
+      <a class="back-to-projects" href="../index.html#projects"><span aria-hidden="true">←</span> 项目案例</a>
+    </div>
+  </header>
+  <main class="shell case-page" id="main" tabindex="-1" aria-labelledby="case-name">
+    <article aria-labelledby="case-name">
+      <header class="case-intro">
+        <h1 id="case-name">电动吊篮运行监测</h1>
+        <p>运行监测需要保留告警前后的仪表数据，为班组核对制动与传感器状态提供记录。</p>
+        <ul class="tags" aria-label="项目技术栈">
+          <li class="tag">Modbus RTU</li><li class="tag">仪表数据采集</li><li class="tag">安全继电器</li>
+        </ul>
+        <dl class="case-facts">
+          <div><dt>个人职责</dt><dd>参与设备侧运行数据采集的对接。</dd></div>
+          <div><dt>项目内容</dt><dd>运行数据采集、告警与安全联锁配合</dd></div>
+        </dl>
+      </header>
+      <!-- case-engineering:start -->
+      <div class="case-engineering">
+        <section class="engineering-section" aria-labelledby="engineering-w06-architecture">
+          <h2 id="engineering-w06-architecture">项目整体架构图</h2>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">运行数据监测</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>仪表与工业 I/O</strong><span>采集双路载重、倾角、风速和升降方向</span></div>
+                <div class="engineering-connector"><span>仪表读数与状态</span></div>
+                <div class="engineering-node"><strong>ROS2 只读采集网关</strong><span>获取仪表数据和设备状态</span></div>
+                <div class="engineering-connector"><span>采样记录与事件</span></div>
+                <div class="engineering-node"><strong>工控机事件记录</strong><span>按设备与班次归档曲线、告警与制动反馈</span></div>
+              </div>
+            </div>
+            <div class="engineering-path">
+              <p class="engineering-path-label">本地安全联锁</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>限位开关和仪表触点</strong><span>提供限位及超限状态</span></div>
+                <div class="engineering-connector"><span>限位、超限信号</span></div>
+                <div class="engineering-node"><strong>独立安全继电器</strong><span>在设备侧执行联锁</span></div>
+                <div class="engineering-connector"><span>联锁动作</span></div>
+                <div class="engineering-node"><strong>告警与制动</strong><span>本地实现告警和制动联动</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-w06-communication">
+          <h2 id="engineering-w06-communication">ROS2 节点通信关系图</h2>
+          <p class="engineering-note">本图表示方案中的采集与记录职责。本地联锁在设备侧独立运行。</p>
+          <figure class="engineering-diagram">
+            <div class="engineering-path">
+              <p class="engineering-path-label">监测事件归档</p>
+              <div class="engineering-flow" style="--edge-count: 2">
+                <div class="engineering-node"><strong>只读采集网关</strong><span>采集仪表读数及制动反馈</span></div>
+                <div class="engineering-connector"><span>载重、倾角与联锁状态</span></div>
+                <div class="engineering-node"><strong>事件与曲线记录模块</strong><span>按设备、班次和事件整理运行时序</span></div>
+                <div class="engineering-connector"><span>事件编号与时序数据</span></div>
+                <div class="engineering-node"><strong>班报模块</strong><span>关联维护条目和曲线，提示需要复查的事件</span></div>
+              </div>
+            </div>
+          </figure>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-w06-modules">
+          <h2 id="engineering-w06-modules">软件模块设计</h2>
+          <dl class="engineering-modules">
+            <div><dt>仪表接入与采集</dt><dd>仪表侧完成去皮和标定，网关读取两个称重通道和运行状态。</dd></div>
+            <div><dt>本地联锁</dt><dd>限位开关、仪表超限触点和独立安全继电器实现告警与制动联动。</dd></div>
+            <div><dt>运行时序归档</dt><dd>记录告警前后载重、倾角及继电器反馈，以便按事件复盘。</dd></div>
+            <div><dt>班报与维护条目关联</dt><dd>汇总告警持续时间、重复告警和制动情况，关联对应设备手册和维护记录。</dd></div>
+          </dl>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-w06-interfaces">
+          <h2 id="engineering-w06-interfaces">硬件通信接口设计</h2>
+          <table class="engineering-interfaces">
+            <thead><tr><th scope="col">设备或端点</th><th scope="col">通信接口</th><th scope="col">信号或数据</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">称重仪表与网关</th><td>只读 Modbus RTU</td><td>双路载重及仪表状态</td></tr>
+              <tr><th scope="row">现场传感器与工控机</th><td>工业 I/O</td><td>倾角、风速、升降方向</td></tr>
+              <tr><th scope="row">限位开关、仪表触点与安全继电器</th><td>本地硬件联锁</td><td>限位和超限触点信号</td></tr>
+              <tr><th scope="row">制动继电器反馈</th><td>设备状态输入</td><td>继电器状态用于事件记录与回看</td></tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="engineering-section" aria-labelledby="engineering-w06-key">
+          <h2 id="engineering-w06-key">关键功能与技术说明</h2>
+          <dl class="engineering-key">
+            <div><dt>联锁和采集职责</dt><dd>在设备侧完成限位、超限告警和制动联动。上位机以只读方式采集仪表数据，同步记录联锁触发前后的设备状态。</dd></div>
+            <div><dt>以可追溯记录生成班报</dt><dd>先由运行记录计算告警次数与持续时间，再按设备版本关联手册。班报保留事件编号、曲线和相关条目供班组核对。</dd></div>
+          </dl>
+        </section>
+      </div>
+      <!-- case-engineering:end -->
+    </article>
+    <nav class="case-section related-cases" aria-labelledby="related-title">
+      <h2 id="related-title">其他项目案例</h2>
+      <ul>
+        <li><a href="drain-inspection.html">排水管道检测机器人</a></li>
+        <li><a href="wind-blade-inspection.html">风电叶片检测机器人</a></li>
+        <li><a href="fishing-boat-control.html">海钓船用顶流机</a></li>
+      </ul>
+    </nav>
+  </main>
+</body>
+</html>

@@ -31,6 +31,7 @@ const projects = [
   },
   {
     id: "W02", group: "work", title: "拉网捕鱼无人船",
+    page: "cases/net-fishing-usv.html",
     summary: "船体接收差速推进指令，执行沿弧线布网、降速和停止动作。",
     tags: ["CAN", "差速推进", "张力联锁"],
     status: "已用于实际捕鱼作业",
@@ -59,7 +60,7 @@ const projects = [
     result: "实飞验证自主巡航、避障和定点起降。"
   },
   {
-    id: "S02", group: "school", title: "AGV 多传感器融合导航",
+    id: "S02", group: "school", title: "ROS2 AGV 多传感器融合导航",
     page: "cases/agv-navigation.html",
     summary: "用 EKF 联调多传感器导航，在实车上完成 200 米连续运输。",
     tags: ["ROS2 Humble", "STM32", "robot_localization"],
@@ -74,6 +75,7 @@ const projects = [
   },
   {
     id: "S03", group: "school", title: "ROS2 智能送药小车",
+    page: "cases/medical-delivery-robot.html",
     summary: "从识别病房号到卸药返程，把配送动作编排成一条任务链。",
     tags: ["ROS2 Humble", "OpenCV", "OCR"],
     status: "模拟医院全流程验证",
@@ -87,6 +89,7 @@ const projects = [
   },
   {
     id: "S04", group: "school", title: "植保飞行器全覆盖飞播系统",
+    page: "cases/coverage-seeding-uav.html",
     summary: "用网格航线覆盖指定播撒区，将模拟播撒动作与飞行位置联动。",
     tags: ["四旋翼", "覆盖航线", "播撒控制"],
     status: "模拟田块联调",
@@ -100,6 +103,7 @@ const projects = [
   },
   {
     id: "S05", group: "school", title: "空地协同智能消防系统",
+    page: "cases/air-ground-firefighting.html",
     summary: "联调无人机巡逻与地面消防车响应，将模拟火源位置交给车辆执行。",
     tags: ["四旋翼", "巡逻规划", "空地协同"],
     status: "模拟火情协同联调",
@@ -113,6 +117,7 @@ const projects = [
   },
   {
     id: "S06", group: "school", title: "送货无人机",
+    page: "cases/delivery-uav.html",
     summary: "串联定点悬停、升降吊舱收放和恢复巡航，完成指定地点交付。",
     tags: ["多旋翼", "升降吊舱", "定点悬停"],
     status: "指定地点送货测试",
@@ -126,6 +131,7 @@ const projects = [
   },
   {
     id: "S07", group: "school", title: "简易自行瞄准装置",
+    page: "cases/mobile-aiming-device.html",
     summary: "把双轴云台装到自动寻迹小车上，在行驶中控制激光指向靶面。",
     tags: ["自动寻迹", "双轴云台", "激光指向"],
     status: "行驶中瞄准测试",
@@ -139,6 +145,7 @@ const projects = [
   },
   {
     id: "S08", group: "school", title: "自动泊车电动车",
+    page: "cases/autonomous-parking-car.html",
     summary: "用车载传感器联调倒车和侧方泊车，支持单项与连续执行。",
     tags: ["电动车底盘", "车载传感器", "泊车控制"],
     status: "入库与出库实车测试",
@@ -152,6 +159,7 @@ const projects = [
   },
   {
     id: "S09", group: "school", title: "坡道行驶电动车",
+    page: "cases/slope-driving-car.html",
     summary: "用车载传感器完成平地及坡道循迹，驶入指定停靠区后停车。",
     tags: ["TI 微控制器", "标记线循迹", "运动控制"],
     status: "平地与坡道实车测试",
@@ -165,6 +173,7 @@ const projects = [
   },
   {
     id: "W04", group: "work", title: "给水管道检测机器人",
+    page: "cases/water-pipe-inspection.html",
     summary: "本体通过系缆接收推进指令，配合完成巡航、驻留采样和回收。",
     tags: ["系缆控制", "双路推进", "水听器"],
     role: "参与机器人本体侧推进指令与检测流程的对接。",
@@ -176,6 +185,7 @@ const projects = [
   },
   {
     id: "W05", group: "work", title: "风电叶片检测机器人",
+    page: "cases/wind-blade-inspection.html",
     summary: "本体按上位机指令行走、调整拍摄视角和补光，配合分段扫描。",
     tags: ["四轮驱动", "多相机", "Modbus RTU"],
     role: "参与设备侧行走与拍摄动作的对接。",
@@ -187,6 +197,7 @@ const projects = [
   },
   {
     id: "W06", group: "work", title: "电动吊篮运行监测",
+    page: "cases/suspended-platform-monitoring.html",
     summary: "设备侧配合上位机读取运行数据，告警和制动由本地联锁执行。",
     tags: ["Modbus RTU", "仪表数据采集", "安全继电器"],
     role: "参与设备侧运行数据采集的对接。",
