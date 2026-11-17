@@ -51,7 +51,9 @@
 
 * 编程与视觉涉及 C++、Python、OpenCV、OCR 和 ONNX Runtime。
 
-* 定位与导航涉及 `robot_localization`、EKF、AMCL、`move_base`、A\* 和 TF。
+* 建图与定位涉及激光 SLAM（GMapping、Cartographer）、视觉 SLAM（ORB-SLAM2、RTAB-Map）与多传感器融合建图，以及 `robot_localization` EKF、AMCL 和 TF。
+
+* 规划与控制涉及 A\*、Dijkstra、Hybrid A\* 全局规划和 DWA、TEB、Pure Pursuit 局部控制，使用 `move_base` / Nav2 完成导航系统联调。
 
 * 嵌入式开发涉及 STM32、TI 微控制器、CAN、RS-485 和 Modbus RTU。
 

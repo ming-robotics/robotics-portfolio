@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="丁彬的机器人软件开发简历：1 年以上 ROS1/ROS2 开发经验，3 款商用机器人落地，涵盖工业通信、运动控制、多传感器融合与实机交付。">
+  <meta name="description" content="丁彬的机器人软件开发简历：1 年以上 ROS1/ROS2 开发经验，3 款商用机器人落地，涵盖工业通信、运动控制、SLAM 建图导航与实机交付。">
   <meta name="theme-color" content="#f7f6f0">
   <meta property="og:type" content="website">
   <meta property="og:title" content="丁彬｜机器人软件开发简历">
-  <meta property="og:description" content="1 年以上 ROS1/ROS2 开发经验，3 款商用机器人落地。查看工作经历、项目成果与专业技能。">
+  <meta property="og:description" content="1 年以上 ROS1/ROS2 开发经验，3 款商用机器人落地，熟悉 SLAM 建图与规划控制算法。查看工作经历、项目成果与专业技能。">
   <meta property="og:url" content="https://ming-robotics.github.io/robotics-portfolio/resume.html">
   <meta property="og:image" content="https://ming-robotics.github.io/robotics-portfolio/art/portfolio-social.png">
   <meta property="og:image:alt" content="丁彬机器人软件开发作品集">
@@ -44,7 +44,7 @@
         </div>
         <img class="resume-portrait" src="art/resume-portrait.png" width="297" height="356" alt="丁彬证件照" fetchpriority="high">
       </div>
-      <p class="resume-summary">1 年以上机器人软件开发经验，专注工业通信、运动控制与实机部署交付，参与 3 款商用机器人从开发到落地。</p>
+      <p class="resume-summary">1 年以上机器人软件开发经验，专注工业通信、运动控制、SLAM 建图导航与实机部署交付，参与 3 款商用机器人从开发到落地。</p>
       <div class="resume-links">
         <a href="tel:+8619970209233"><span class="resume-link-label">电话</span>19970209233</a>
         <a href="mailto:2083417753@qq.com"><span class="resume-link-label">邮箱</span>2083417753@qq.com</a>
@@ -58,6 +58,7 @@
       <ul class="resume-highlights">
         <li><strong>机器人软件开发：</strong>以 C++ / Python 为主，熟悉 Linux 工控环境与机器人软硬件集成，具备 ROS1 / ROS2 项目实机部署经验。</li>
         <li><strong>商用产品交付：</strong>负责 3 款商用机器人的软件开发与落地，覆盖 CAN、RS-485、Modbus RTU 接入、运动控制、任务编排及分级异常保护。</li>
+        <li><strong>建图导航算法：</strong>熟悉激光 / 视觉 / 多传感器融合 SLAM 与全局规划、局部控制算法，能完成从算法选型配置到实车联调的完整落地。</li>
         <li><strong>完整工程实践：</strong>具备多传感器融合、实机联调标定、作业数据分析与故障溯源能力，覆盖需求分析、软件开发到现场部署交付全流程。</li>
       </ul>
     </section>
@@ -83,7 +84,15 @@
         </article>
         <article>
           <h3>传感器融合与自主导航</h3>
-          <p>激光雷达、IMU、轮式编码器、GNSS；EKF、AMCL、GMapping / Cartographer、move_base / Nav2 配置与调试。</p>
+          <p>激光雷达、IMU、轮式编码器、GNSS 接入与标定；robot_localization EKF 融合、move_base / Nav2 导航系统联调与实车验证。</p>
+        </article>
+        <article>
+          <h3>SLAM 建图与定位</h3>
+          <p>激光 SLAM（GMapping、Cartographer、SLAM Toolbox）、视觉 SLAM（ORB-SLAM2、RTAB-Map）、RGB-D + 激光多传感器融合建图；AMCL 粒子滤波定位与自动重定位。</p>
+        </article>
+        <article>
+          <h3>路径规划与运动控制</h3>
+          <p>A*、Dijkstra、Hybrid A*、Theta* 全局规划；DWA、TEB、MPPI、Pure Pursuit 局部规划控制；Nav2 代价地图、行为树与恢复行为配置，覆盖差速 / 全向 / 阿克曼车型。</p>
         </article>
         <article>
           <h3>机器视觉与 AI 应用</h3>

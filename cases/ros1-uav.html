@@ -113,7 +113,7 @@
           <dl class="engineering-modules">
             <div><dt>任务控制</dt><dd>以 C++ 节点承接飞行目标，组织自主巡航、避障和定点起降。</dd></div>
             <div><dt>传感器处理</dt><dd>以 C++ 节点处理传感器数据，编写姿态解算相关代码。</dd></div>
-            <div><dt>定位与规划</dt><dd>联调 TF、AMCL 和 move_base，编写 A* 路径搜索相关代码。</dd></div>
+            <div><dt>定位与规划</dt><dd>联调 TF、AMCL 和 move_base 的全局规划与局部控制分层，编写 A* 路径搜索相关代码。</dd></div>
             <div><dt>飞控接入</dt><dd>通过 MAVROS 下发飞行指令并读取状态，完成 Pixhawk 4 的实机校准。</dd></div>
             <div><dt>仿真联调</dt><dd>在 Gazebo 中联调导航和飞行控制流程，再迁移至实机验证。</dd></div>
           </dl>
@@ -134,6 +134,7 @@
           <dl class="engineering-key">
             <div><dt>定位与规划如何衔接</dt><dd>AMCL 结合预建地图、里程计等观测，以粒子滤波估计地图中的位置。TF 提供各模块需要的坐标关系，move_base 根据定位结果和任务目标组织导航。</dd></div>
             <div><dt>A* 路径搜索</dt><dd>按起点到候选节点的累计代价和候选节点到目标的启发式代价选择扩展顺序，用于搜索到达目标的路径。</dd></div>
+            <div><dt>全局规划与局部控制配合</dt><dd>move_base 的全局规划基于预建地图搜索参考路径，局部规划器结合实时障碍调整速度与方向。分层配合让无人机在巡航中跟踪参考路径，同时绕开途中出现的障碍。</dd></div>
           </dl>
         </section>
       </div>

@@ -62,14 +62,14 @@ const projects = [
   {
     id: "S02", group: "school", title: "ROS2 AGV 多传感器融合导航",
     page: "cases/agv-navigation.html",
-    summary: "用 EKF 联调多传感器导航，在实车上完成 200 米连续运输。",
-    tags: ["ROS2 Humble", "STM32", "robot_localization"],
+    summary: "用激光 SLAM 建图与 EKF 融合定位联调多传感器导航，在实车上完成 200 米连续运输。",
+    tags: ["ROS2 Humble", "STM32", "robot_localization", "激光 SLAM"],
     status: "实车连续运输 200 米",
     role: "校园独立开发",
     context: "在 STM32 移动底盘上接入环境感知和运动反馈，完成运输任务中的定位与路径规划。",
     steps: [
       ["接入底盘和传感器", "搭载激光雷达、IMU 和光电编码器，为上层导航提供环境观测和运动反馈。"],
-      ["融合与导航联调", "使用 robot_localization 的扩展卡尔曼滤波器进行多传感器融合，联调建图、自主定位和路径规划。"]
+      ["融合与导航联调", "使用 robot_localization 的扩展卡尔曼滤波器进行多传感器融合，联调 Cartographer 激光 SLAM 建图、自主定位和 Nav2 路径规划与运动控制。"]
     ],
     result: "在实车测试中完成 200 米连续运输。"
   },

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="丁彬的 ROS1 / ROS2 机器人软件开发作品集，展示排水管道检测机器人、海钓船用顶流机和 ROS1 自主导航无人机的个人职责与实机验证。">
+  <meta name="description" content="丁彬的 ROS1 / ROS2 机器人软件开发作品集，展示排水管道检测机器人、海钓船用顶流机和 ROS1 自主导航无人机的个人职责与实机验证，涵盖 SLAM 建图与规划控制算法实践。">
   <meta name="theme-color" content="#f7f6f0">
   <meta property="og:type" content="website">
   <meta property="og:title" content="丁彬｜机器人软件开发作品集">
@@ -41,13 +41,13 @@
       <div class="hero-copy">
         <p class="hero-role">丁彬 <span aria-hidden="true"></span> ROS1 / ROS2</p>
         <h1 id="hero-title">机器人软件<br><span>开发工程师</span></h1>
-        <p class="hero-text">在职参与管道巡检与无人船项目，负责本体侧指令执行与实机联调。独立开发 ROS1 自主导航无人机和 ROS2 融合导航 AGV。</p>
+        <p class="hero-text">拥有 ROS1/ROS2 实机部署经验，以 C++/Python 为主，擅长激光、视觉、多传感器融合 SLAM 算法，以及全局路径规划、局部运动控制。</p>
         <div class="hero-actions">
           <a class="button primary" href="#projects">查看代表项目 <span aria-hidden="true">↘</span></a>
           <a class="button secondary" href="resume.html">查看简历 <span aria-hidden="true">↗</span></a>
         </div>
         <ul class="hero-stack" aria-label="主要技术">
-          <li>C++ / Python</li><li>Linux</li>
+          <li>C++ / Python</li><li>SLAM 算法</li><li>规控算法</li>
         </ul>
       </div>
       <figure class="hero-figure">
@@ -129,10 +129,34 @@
             <a class="skill-case" href="cases/agv-navigation.html">ROS2 AGV 多传感器融合导航 <span aria-hidden="true">↗</span></a>
           </article>
           <article class="skill">
+            <h3>SLAM 建图与定位</h3>
+            <p>配置对比激光 SLAM、视觉 SLAM 与多传感器融合建图方案，联调 AMCL 粒子滤波定位与自动重定位。</p>
+            <div>GMapping · Cartographer · ORB-SLAM2 · RTAB-Map</div>
+            <a class="skill-case" href="cases/agv-navigation.html">ROS2 AGV 多传感器融合导航 <span aria-hidden="true">↗</span></a>
+          </article>
+          <article class="skill">
+            <h3>路径规划与运动控制</h3>
+            <p>按车型选型全局规划与局部控制算法，调参完成实车路径跟踪与动态避障，毕设中手写 A* 搜索。</p>
+            <div>A* · Hybrid A* · DWA · TEB · Pure Pursuit</div>
+            <a class="skill-case" href="cases/ros1-uav.html">ROS1 自主导航无人机 <span aria-hidden="true">↗</span></a>
+          </article>
+          <article class="skill">
             <h3>视觉识别与配送</h3>
             <p>用 OpenCV 和 OCR 识别病房号，在模拟医院验证出发、到站、卸药和返程。</p>
             <div>OpenCV · OCR · ROS2</div>
             <a class="skill-case" href="cases/medical-delivery-robot.html">ROS2 智能送药小车 <span aria-hidden="true">↗</span></a>
+          </article>
+          <article class="skill">
+            <h3>AI 模型训练与部署</h3>
+            <p>用 LabelImg 标注数据并迁移训练 YOLO 模型，经 mAP 评估后部署到边缘设备，管道缺陷筛查通过现场数据验证。</p>
+            <div>YOLO · LabelImg · ONNX Runtime</div>
+            <a class="skill-case" href="cases/drain-inspection.html">排水管道检测机器人 <span aria-hidden="true">↗</span></a>
+          </article>
+          <article class="skill">
+            <h3>仿真与实机验证</h3>
+            <p>在 Gazebo 中联调导航与飞行控制流程，再迁移至实机验证，无人机从仿真推进到实飞。</p>
+            <div>Gazebo · 仿真迁移 · 实飞验证</div>
+            <a class="skill-case" href="cases/ros1-uav.html">ROS1 自主导航无人机 <span aria-hidden="true">↗</span></a>
           </article>
         </div>
       </div>

@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="丁彬独立完成的 ROS2 AGV，多传感器接入、EKF 融合与导航联调，实车完成 200 米连续运输。">
+  <meta name="description" content="丁彬独立完成的 ROS2 AGV，多传感器接入、激光 SLAM 建图、EKF 融合与 Nav2 导航联调，实车完成 200 米连续运输。">
   <meta name="theme-color" content="#f7f6f0">
   <meta property="og:type" content="article">
   <meta property="og:title" content="ROS2 AGV 多传感器融合导航｜丁彬">
-  <meta property="og:description" content="校园独立开发案例。基于 STM32 底盘联调 ROS2 感知、融合定位及路径规划，实车完成 200 米连续运输。">
+  <meta property="og:description" content="校园独立开发案例。基于 STM32 底盘联调 ROS2 感知、激光 SLAM 建图、融合定位及路径规划，实车完成 200 米连续运输。">
   <meta property="og:url" content="https://ming-robotics.github.io/robotics-portfolio/cases/agv-navigation.html">
   <meta property="og:image" content="https://ming-robotics.github.io/robotics-portfolio/art/portfolio-social.png">
   <meta property="og:image:alt" content="丁彬的机器人软件开发作品集">
@@ -32,12 +32,12 @@
     <article aria-labelledby="case-name">
       <header class="case-intro">
         <h1 id="case-name">ROS2 AGV 多传感器融合导航</h1>
-        <p>在 STM32 移动底盘上接入环境观测与运动反馈，让小车能够定位、规划路径并执行运输任务。</p>
+        <p>在 STM32 移动底盘上接入环境观测与运动反馈，完成激光 SLAM 建图、融合定位与路径规划，执行实车运输任务。</p>
         <ul class="tags" aria-label="项目技术栈">
-          <li class="tag">ROS2 Humble</li><li class="tag">STM32</li><li class="tag">robot_localization</li>
+          <li class="tag">ROS2 Humble</li><li class="tag">STM32</li><li class="tag">robot_localization</li><li class="tag">激光 SLAM</li>
         </ul>
         <dl class="case-facts">
-          <div><dt>个人职责</dt><dd>独立接入 STM32 底盘与传感器，联调 ROS2 定位和导航</dd></div>
+          <div><dt>个人职责</dt><dd>独立接入 STM32 底盘与传感器，联调 ROS2 SLAM 建图、定位和导航</dd></div>
           <div><dt>实车验证</dt><dd>完成 200 米连续运输</dd></div>
         </dl>
       </header>
@@ -81,7 +81,7 @@
               <div class="engineering-flow" style="--edge-count: 2">
                 <div class="engineering-node"><strong>激光雷达接入</strong><span>提供周围环境的扫描数据</span></div>
                 <div class="engineering-connector"><span>激光扫描</span></div>
-                <div class="engineering-node"><strong>建图模块</strong><span>利用环境观测构建地图</span></div>
+                <div class="engineering-node"><strong>激光 SLAM 建图</strong><span>使用 Cartographer 构建环境占据栅格地图</span></div>
                 <div class="engineering-connector"><span>环境地图</span></div>
                 <div class="engineering-node"><strong>导航模块</strong><span>使用环境信息规划行驶路径</span></div>
               </div>
@@ -112,9 +112,10 @@
           <h2 id="engineering-s02-modules">软件模块设计</h2>
           <dl class="engineering-modules">
             <div><dt>环境感知</dt><dd>接入激光雷达，将周围环境观测交给建图和导航。</dd></div>
+            <div><dt>SLAM 建图</dt><dd>使用 Cartographer 激光 SLAM 构建环境占据栅格地图，通过扫描匹配与子图拼接形成一致地图。</dd></div>
             <div><dt>运动观测</dt><dd>接入 IMU 和光电编码器，为上层提供惯性与底盘运动反馈。</dd></div>
             <div><dt>融合定位</dt><dd>使用 robot_localization 的 EKF 处理运动观测并输出融合估计。</dd></div>
-            <div><dt>路径规划</dt><dd>把环境地图、融合定位与运输目标衔接到导航流程中。</dd></div>
+            <div><dt>路径规划</dt><dd>Nav2 全局规划用 A* 搜索参考路径，局部控制用 DWA 跟踪路径并绕障，衔接融合定位与运输目标。</dd></div>
             <div><dt>底盘控制</dt><dd>以 STM32 为底盘控制核心，执行上层运动指令。</dd></div>
           </dl>
         </section>
@@ -135,6 +136,7 @@
           <dl class="engineering-key">
             <div><dt>EKF 融合定位</dt><dd>EKF 先按运动模型预测状态，再用可用观测修正估计，将不同来源的运动观测衔接到同一个状态估计中。定位与导航联调时使用融合后的运动估计。</dd></div>
             <div><dt>建图与运动观测分工</dt><dd>激光扫描用于观察环境并支持建图，IMU 和编码器用于提供运动侧信息。导航将地图、位置估计与运输目标关联后，再将运动指令交给 STM32 底盘。</dd></div>
+            <div><dt>规划与控制分层</dt><dd>Nav2 全局规划器根据地图和运输目标搜索参考路径，局部控制器结合实时障碍生成速度指令，交由 STM32 底盘执行；两者分层配合完成运输过程中的路径跟踪与动态避障。</dd></div>
           </dl>
         </section>
       </div>
